@@ -118,13 +118,15 @@ function calculateStats(totalItems: number, decisions: Record<string, UserDecisi
   };
 }
 
+const isInitialMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
+
 export const useMediaTrackerStore = create<MediaTrackerState>((set, get) => ({
   catalog: ANIME_CATALOG,
   decisions: {},
   isLoading: true,
   isInitialized: false,
 
-  viewMode: 'grid',
+  viewMode: isInitialMobile ? 'poll' : 'grid',
   currentPage: 1,
   pageSize: 48,
   currentPollIndex: 0,

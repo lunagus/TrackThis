@@ -391,24 +391,24 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
       )}
 
       {/* Floating Tactical Command Dock (Sweep Mode + Pagination) */}
-      <div className="fixed bottom-4 left-3 right-3 sm:left-6 sm:right-6 max-w-5xl mx-auto z-30">
-        <div className="p-3 sm:p-3.5 rounded-2xl bg-[#070A0E]/90 backdrop-blur-xl border-2 border-[#1F2B3B] shadow-[0_10px_35px_rgba(0,0,0,0.8)] flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="fixed bottom-3 sm:bottom-4 left-2 right-2 sm:left-6 sm:right-6 max-w-5xl mx-auto z-30">
+        <div className="p-2 sm:p-3.5 rounded-xl sm:rounded-2xl bg-[#070A0E]/95 backdrop-blur-xl border-2 border-[#1F2B3B] shadow-[0_10px_35px_rgba(0,0,0,0.8)] flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3">
           
           {/* Sweep Mode Action */}
           <div className="w-full sm:w-auto">
             <button
               onClick={handleSweepAction}
               disabled={undecidedOnPage.length === 0}
-              className={`w-full sm:w-auto px-4 py-2.5 rounded-xl font-manga font-bold text-xs uppercase tracking-wider flex items-center justify-center space-x-2 border-2 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.6)] active:translate-y-0.5 ${
+              className={`w-full sm:w-auto px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-manga font-bold text-[11px] sm:text-xs uppercase tracking-wider flex items-center justify-center space-x-1.5 sm:space-x-2 border-2 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.6)] active:translate-y-0.5 ${
                 undecidedOnPage.length > 0
                   ? 'bg-[#0E141D] text-[#00E5FF] border-[#00E5FF] hover:bg-[#00E5FF] hover:text-black shadow-[0_0_15px_rgba(0,229,255,0.3)]'
                   : 'bg-[#0E141D] text-slate-600 border-[#1F2B3B] opacity-50 cursor-not-allowed'
               }`}
             >
-              <CheckCheck className="w-4 h-4 stroke-[2.5]" />
+              <CheckCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]" />
               <span>Sweep Remaining as No</span>
-              <span className="px-2 py-0.5 rounded-md text-[10px] font-mono bg-black/50 border border-current">
-                {undecidedOnPage.length} unreviewed
+              <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-black/50 border border-current">
+                {undecidedOnPage.length} left
               </span>
             </button>
           </div>
@@ -418,26 +418,26 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
             <button
               onClick={() => handlePageChange(validCurrentPage - 1)}
               disabled={validCurrentPage <= 1}
-              className="px-3 py-2 rounded-xl border border-[#1F2B3B] bg-[#0E141D] text-slate-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed flex items-center space-x-1 text-xs font-mono"
+              className="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl border border-[#1F2B3B] bg-[#0E141D] text-slate-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed flex items-center space-x-1 text-xs font-mono"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Prev</span>
             </button>
 
             {/* Current Page Pill */}
-            <div className="px-3.5 py-1.5 rounded-xl bg-[#0E141D] border-2 border-[#1F2B3B] text-xs font-mono text-slate-300">
-              <span className="font-bold text-[#00E5FF] text-sm">{validCurrentPage}</span>
+            <div className="px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-lg sm:rounded-xl bg-[#0E141D] border-2 border-[#1F2B3B] text-xs font-mono text-slate-300">
+              <span className="font-bold text-[#00E5FF] text-xs sm:text-sm">{validCurrentPage}</span>
               <span className="text-slate-500"> / </span>
-              <span className="font-bold text-slate-300">{totalPages}</span>
+              <span className="font-bold text-slate-300 text-xs sm:text-sm">{totalPages}</span>
             </div>
 
             <button
               onClick={() => handlePageChange(validCurrentPage + 1)}
               disabled={validCurrentPage >= totalPages}
-              className="px-3 py-2 rounded-xl border border-[#1F2B3B] bg-[#0E141D] text-slate-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed flex items-center space-x-1 text-xs font-mono"
+              className="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl border border-[#1F2B3B] bg-[#0E141D] text-slate-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed flex items-center space-x-1 text-xs font-mono"
             >
               <span className="hidden sm:inline">Next</span>
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
           </div>
 

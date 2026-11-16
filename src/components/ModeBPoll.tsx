@@ -223,7 +223,7 @@ export const ModeBPoll: React.FC<ModeBPollProps> = ({ filteredItems }) => {
         }`}
       >
         {/* Banner Backdrop */}
-        <div className="relative h-48 sm:h-64 w-full overflow-hidden bg-slate-950">
+        <div className="relative h-32 sm:h-64 w-full overflow-hidden bg-slate-950">
           <img
             src={currentItem.bannerImage || currentItem.posterImage}
             alt="Backdrop"
@@ -233,45 +233,45 @@ export const ModeBPoll: React.FC<ModeBPollProps> = ({ filteredItems }) => {
           <div className="absolute inset-0 bg-gradient-to-t from-[#0E141D] via-[#0E141D]/60 to-transparent" />
           
           {/* Tag Badges */}
-          <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-            <span className="px-3 py-1 rounded-lg bg-black/85 backdrop-blur-md text-[#00E5FF] text-xs font-mono font-bold border border-[#00E5FF]/40 flex items-center space-x-1">
+          <div className="absolute top-2 sm:top-4 left-2 sm:left-4 flex flex-wrap gap-1 sm:gap-2">
+            <span className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-md sm:rounded-lg bg-black/85 backdrop-blur-md text-[#00E5FF] text-[10px] sm:text-xs font-mono font-bold border border-[#00E5FF]/40 flex items-center space-x-1">
               {currentItem.format === 'Movie' ? (
-                <Film className="w-3.5 h-3.5" />
+                <Film className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               ) : (
-                <Tv className="w-3.5 h-3.5" />
+                <Tv className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               )}
               <span>{currentItem.format}</span>
             </span>
-            <span className="px-3 py-1 rounded-lg bg-black/85 backdrop-blur-md text-amber-300 text-xs font-mono font-bold border border-amber-400/40 flex items-center space-x-1">
-              <Star className="w-3.5 h-3.5 fill-amber-300" />
-              <span>{currentItem.score.toFixed(2)} Score</span>
+            <span className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-md sm:rounded-lg bg-black/85 backdrop-blur-md text-amber-300 text-[10px] sm:text-xs font-mono font-bold border border-amber-400/40 flex items-center space-x-1">
+              <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-300" />
+              <span>{currentItem.score.toFixed(2)}</span>
             </span>
-            <span className="px-3 py-1 rounded-lg bg-black/85 backdrop-blur-md text-slate-300 text-xs font-mono border border-slate-700 flex items-center space-x-1">
-              <Calendar className="w-3.5 h-3.5" />
-              <span>{currentItem.year} ({currentItem.season})</span>
+            <span className="px-2 sm:px-3 py-0.5 sm:py-1 rounded-md sm:rounded-lg bg-black/85 backdrop-blur-md text-slate-300 text-[10px] sm:text-xs font-mono border border-slate-700 hidden xs:flex items-center space-x-1">
+              <Calendar className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+              <span>{currentItem.year}</span>
             </span>
           </div>
 
           {/* Decision Status Watermark Badge */}
           {currentDecision && (
-            <div className="absolute top-4 right-4">
-              <span className={`px-3.5 py-1.5 rounded-lg text-xs font-manga font-bold uppercase tracking-wider flex items-center space-x-1.5 border shadow-lg ${
+            <div className="absolute top-2 sm:top-4 right-2 sm:right-4">
+              <span className={`px-2.5 sm:px-3.5 py-0.5 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-manga font-bold uppercase tracking-wider flex items-center space-x-1 border shadow-lg ${
                 isSeen 
                   ? 'bg-[#00E5FF] text-black border-white' 
                   : 'bg-[#FF334B] text-white border-white'
               }`}>
-                {isSeen ? <Check className="w-4 h-4 stroke-[3]" /> : <X className="w-4 h-4 stroke-[3]" />}
-                <span>{isSeen ? 'Marked as Seen' : 'Marked as Not Seen'}</span>
+                {isSeen ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : <X className="w-3.5 h-3.5 stroke-[3]" />}
+                <span>{isSeen ? 'Seen' : 'Not Seen'}</span>
               </span>
             </div>
           )}
         </div>
 
         {/* Content Body */}
-        <div className="p-5 sm:p-7 -mt-20 sm:-mt-24 relative z-10 flex flex-col md:flex-row gap-6">
+        <div className="p-3.5 sm:p-7 -mt-16 sm:-mt-24 relative z-10 flex flex-col md:flex-row gap-4 sm:gap-6">
           
-          {/* Big Poster Thumbnail */}
-          <div className="w-40 sm:w-52 aspect-[2/3] shrink-0 rounded-2xl overflow-hidden border-2 border-white shadow-[0_10px_25px_rgba(0,0,0,0.9)] mx-auto md:mx-0 bg-slate-950">
+          {/* Poster Thumbnail */}
+          <div className="w-28 sm:w-52 aspect-[2/3] shrink-0 rounded-xl sm:rounded-2xl overflow-hidden border-2 border-white shadow-[0_8px_20px_rgba(0,0,0,0.9)] mx-auto md:mx-0 bg-slate-950">
             <img
               src={currentItem.posterImage}
               alt={currentItem.title.english}
@@ -287,32 +287,32 @@ export const ModeBPoll: React.FC<ModeBPollProps> = ({ filteredItems }) => {
           <div className="flex-1 flex flex-col justify-between">
             <div>
               {/* Demographics & Studio */}
-              <div className="flex flex-wrap items-center gap-2 mb-1.5">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
                 {currentItem.demographics.length > 0 && (
-                  <span className="px-2 py-0.5 rounded-md text-[10px] uppercase font-bold tracking-widest bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30">
+                  <span className="px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] uppercase font-bold tracking-widest bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30">
                     {currentItem.demographics.join(' • ')}
                   </span>
                 )}
-                <span className="text-xs font-mono text-slate-400 flex items-center space-x-1">
-                  <Building2 className="w-3.5 h-3.5 text-slate-500" />
+                <span className="text-[11px] sm:text-xs font-mono text-slate-400 flex items-center space-x-1">
+                  <Building2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-500" />
                   <span>{currentItem.studios.join(', ')}</span>
                 </span>
               </div>
 
               {/* Title */}
-              <h2 className="text-2xl sm:text-3xl font-extrabold font-manga text-white tracking-tight leading-tight mb-1">
+              <h2 className="text-lg sm:text-3xl font-extrabold font-manga text-white tracking-tight leading-tight mb-1 text-center md:text-left">
                 {currentItem.title.english || currentItem.title.romaji}
               </h2>
-              <div className="text-xs font-mono text-slate-400 mb-3">
+              <div className="text-[11px] sm:text-xs font-mono text-slate-400 mb-2.5 text-center md:text-left">
                 {currentItem.title.romaji} {currentItem.title.native ? `(${currentItem.title.native})` : ''}
               </div>
 
               {/* Genres Chips */}
-              <div className="flex flex-wrap gap-1.5 mb-4">
+              <div className="flex flex-wrap gap-1 sm:gap-1.5 mb-3 justify-center md:justify-start">
                 {currentItem.genres.map(genre => (
                   <span
                     key={genre}
-                    className="px-2.5 py-0.5 rounded-md text-xs font-medium bg-[#151E2B] text-slate-300 border border-[#1F2B3B]"
+                    className="px-2 py-0.5 rounded-md text-[10px] sm:text-xs font-medium bg-[#151E2B] text-slate-300 border border-[#1F2B3B]"
                   >
                     {genre}
                   </span>
@@ -320,13 +320,13 @@ export const ModeBPoll: React.FC<ModeBPollProps> = ({ filteredItems }) => {
               </div>
 
               {/* Synopsis */}
-              <div className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans line-clamp-5 sm:line-clamp-6 mb-4">
+              <div className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans line-clamp-3 sm:line-clamp-6 mb-3">
                 {currentItem.synopsis}
               </div>
             </div>
 
             {/* External Info Bar */}
-            <div className="flex items-center space-x-3 text-xs font-mono text-slate-400 pt-3 border-t border-[#1F2B3B]">
+            <div className="flex items-center space-x-2 sm:space-x-3 text-[10px] sm:text-xs font-mono text-slate-400 pt-2 sm:pt-3 border-t border-[#1F2B3B]">
               <span>Episodes: {currentItem.episodes || 'N/A'}</span>
               <span>•</span>
               <span>MAL ID: {currentItem.externalIds.mal}</span>
@@ -336,32 +336,32 @@ export const ModeBPoll: React.FC<ModeBPollProps> = ({ filteredItems }) => {
           </div>
         </div>
 
-        {/* Triage Action Triggers Bar */}
-        <div className="p-4 sm:p-6 bg-[#070A0E] border-t-2 border-[#1F2B3B] grid grid-cols-1 sm:grid-cols-3 gap-3">
+        {/* Triage Action Triggers Bar (Responsive 3-Column Thumb Dock) */}
+        <div className="p-3 sm:p-6 bg-[#070A0E] border-t-2 border-[#1F2B3B] grid grid-cols-3 gap-2 sm:gap-3">
           
           {/* NO Button */}
           <button
             onClick={() => handleDecision('NOT_SEEN')}
-            className={`py-4 px-6 rounded-2xl font-manga font-black text-sm uppercase tracking-wider flex items-center justify-center space-x-2 border-2 transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.6)] active:translate-y-0.5 active:shadow-none ${
+            className={`py-3 sm:py-4 px-2 sm:px-6 rounded-xl sm:rounded-2xl font-manga font-black text-xs sm:text-sm uppercase tracking-wider flex flex-col sm:flex-row items-center justify-center gap-1 sm:space-x-2 border-2 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.6)] sm:shadow-[4px_4px_0px_rgba(0,0,0,0.6)] active:translate-y-0.5 ${
               isNotSeen
                 ? 'bg-[#FF334B] text-white border-[#FF334B]'
                 : 'bg-[#0E141D] text-[#FF334B] border-[#FF334B] hover:bg-[#FF334B] hover:text-white'
             }`}
           >
-            <X className="w-5 h-5 stroke-[3]" />
-            <span>NOT SEEN</span>
+            <X className="w-4 h-4 sm:w-5 sm:h-5 stroke-[3]" />
+            <span className="text-[10px] sm:text-xs">NO</span>
             <span className="hidden sm:inline text-[10px] px-1.5 py-0.5 rounded bg-black/50 border border-current font-mono">
-              N / Left
+              Left
             </span>
           </button>
 
           {/* SKIP Button */}
           <button
             onClick={handleSkip}
-            className="py-4 px-4 rounded-2xl font-manga font-bold text-xs uppercase tracking-wider flex items-center justify-center space-x-2 bg-[#0E141D] text-slate-300 border-2 border-[#1F2B3B] hover:text-white hover:border-slate-500 transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.6)]"
+            className="py-3 sm:py-4 px-2 sm:px-4 rounded-xl sm:rounded-2xl font-manga font-bold text-xs uppercase tracking-wider flex flex-col sm:flex-row items-center justify-center gap-1 sm:space-x-2 bg-[#0E141D] text-slate-300 border-2 border-[#1F2B3B] hover:text-white hover:border-slate-500 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.6)] sm:shadow-[4px_4px_0px_rgba(0,0,0,0.6)] active:translate-y-0.5"
           >
-            <SkipForward className="w-4 h-4" />
-            <span>SKIP TITLE</span>
+            <SkipForward className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            <span className="text-[10px] sm:text-xs">SKIP</span>
             <span className="hidden sm:inline text-[10px] px-1.5 py-0.5 rounded bg-black/50 text-slate-400 font-mono">
               Space
             </span>
@@ -370,16 +370,16 @@ export const ModeBPoll: React.FC<ModeBPollProps> = ({ filteredItems }) => {
           {/* YES Button */}
           <button
             onClick={() => handleDecision('SEEN')}
-            className={`py-4 px-6 rounded-2xl font-manga font-black text-sm uppercase tracking-wider flex items-center justify-center space-x-2 border-2 transition-all shadow-[4px_4px_0px_rgba(0,0,0,0.6)] active:translate-y-0.5 active:shadow-none ${
+            className={`py-3 sm:py-4 px-2 sm:px-6 rounded-xl sm:rounded-2xl font-manga font-black text-xs sm:text-sm uppercase tracking-wider flex flex-col sm:flex-row items-center justify-center gap-1 sm:space-x-2 border-2 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.6)] sm:shadow-[4px_4px_0px_rgba(0,0,0,0.6)] active:translate-y-0.5 ${
               isSeen
                 ? 'bg-[#00E5FF] text-black border-[#00E5FF]'
                 : 'bg-[#0E141D] text-[#00E5FF] border-[#00E5FF] hover:bg-[#00E5FF] hover:text-black'
             }`}
           >
-            <Check className="w-5 h-5 stroke-[3]" />
-            <span>WATCHED / SEEN</span>
+            <Check className="w-4 h-4 sm:w-5 sm:h-5 stroke-[3]" />
+            <span className="text-[10px] sm:text-xs">SEEN</span>
             <span className="hidden sm:inline text-[10px] px-1.5 py-0.5 rounded bg-black/50 border border-current font-mono">
-              Y / Right
+              Right
             </span>
           </button>
 
