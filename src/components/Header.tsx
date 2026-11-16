@@ -8,7 +8,11 @@ import {
   Layers, 
   Undo2, 
   Trash2,
-  ChevronDown
+  ChevronDown,
+  Check,
+  X,
+  Sparkles,
+  HelpCircle
 } from 'lucide-react';
 import { useMediaTrackerStore } from '../store/useMediaTrackerStore';
 import { 
@@ -49,16 +53,16 @@ export const Header: React.FC<HeaderProps> = ({
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 bg-[#0B0F14]/95 backdrop-blur-md border-b-2 border-[#263238] shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20 gap-2">
+    <header className="sticky top-0 z-40 bg-[#070A0E]/95 backdrop-blur-xl border-b-2 border-[#1F2B3B] shadow-2xl">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20 gap-3">
           
-          {/* Logo & Category Tabs */}
-          <div className="flex items-center space-x-4 sm:space-x-6">
-            <div className="flex items-center space-x-3 cursor-pointer group">
-              {/* Cyan Heart + White Plus Logo */}
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full p-[2px] bg-gradient-to-tr from-[#00E5FF] to-white/40 shadow-[0_0_15px_rgba(0,229,255,0.4)] group-hover:scale-105 transition-transform">
-                <img src="/icon.svg" alt="TrackThis Logo" className="w-full h-full object-contain" />
+          {/* Left: Branding & Category Selector */}
+          <div className="flex items-center space-x-3 sm:space-x-5 shrink-0">
+            <div className="flex items-center space-x-2.5 sm:space-x-3 group cursor-pointer">
+              {/* Cyan Heart + Plus Logo */}
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full p-[2px] bg-gradient-to-tr from-[#00E5FF] via-cyan-300 to-white/40 shadow-[0_0_16px_rgba(0,229,255,0.45)] group-hover:scale-105 transition-transform shrink-0">
+                <img src="/icon.svg" alt="TrackThis Icon" className="w-full h-full object-contain" />
               </div>
 
               <div>
@@ -66,97 +70,111 @@ export const Header: React.FC<HeaderProps> = ({
                   <span className="font-manga text-xl sm:text-2xl font-black tracking-tight text-white group-hover:text-[#00E5FF] transition-colors">
                     TRACK<span className="text-[#00E5FF]">THIS</span>
                   </span>
-                  <span className="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-[#1A222D] text-[#00E5FF] border border-[#00E5FF]/30">
-                    V1.0
+                  <span className="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-[#151E2B] text-[#00E5FF] border border-[#00E5FF]/40 hidden xs:inline">
+                    PRO
                   </span>
                 </div>
-                <div className="hidden sm:block text-[11px] font-mono text-slate-400">
-                  trackthis.cc/<span className="text-white font-semibold">anime</span>
+                <div className="text-[11px] font-mono text-slate-400 hidden sm:block">
+                  trackthis.cc/<span className="text-[#00E5FF] font-semibold">anime</span>
                 </div>
               </div>
             </div>
 
-            {/* Media Tabs */}
-            <nav className="hidden md:flex items-center space-x-1 pl-4 border-l border-[#263238]">
+            {/* Category Switcher Tabs */}
+            <nav className="hidden lg:flex items-center space-x-1 pl-4 border-l border-[#1F2B3B]">
               <button 
-                className="px-3 py-1.5 text-xs font-bold font-manga uppercase rounded-md bg-[#121820] text-[#00E5FF] border-2 border-[#00E5FF] shadow-[2px_2px_0px_rgba(0,229,255,0.4)]"
+                className="px-3 py-1.5 text-xs font-bold font-manga uppercase rounded-lg bg-[#0E141D] text-[#00E5FF] border-2 border-[#00E5FF] shadow-[2px_2px_0px_rgba(0,229,255,0.4)]"
               >
                 Anime
               </button>
               <div className="relative group/tab">
                 <button 
                   disabled
-                  className="px-3 py-1.5 text-xs font-bold font-manga uppercase rounded-md text-slate-500 hover:text-slate-400 cursor-not-allowed flex items-center space-x-1.5 opacity-60"
+                  className="px-3 py-1.5 text-xs font-bold font-manga uppercase rounded-lg text-slate-500 hover:text-slate-400 cursor-not-allowed flex items-center space-x-1 opacity-50"
                 >
                   <span>Movies</span>
-                  <span className="text-[9px] px-1 bg-[#1A222D] text-slate-400 rounded border border-slate-700">Soon</span>
+                  <span className="text-[9px] px-1 py-0.2 bg-[#151E2B] text-slate-400 rounded border border-slate-700">Soon</span>
                 </button>
               </div>
               <div className="relative group/tab">
                 <button 
                   disabled
-                  className="px-3 py-1.5 text-xs font-bold font-manga uppercase rounded-md text-slate-500 hover:text-slate-400 cursor-not-allowed flex items-center space-x-1.5 opacity-60"
+                  className="px-3 py-1.5 text-xs font-bold font-manga uppercase rounded-lg text-slate-500 hover:text-slate-400 cursor-not-allowed flex items-center space-x-1 opacity-50"
                 >
                   <span>Books</span>
-                  <span className="text-[9px] px-1 bg-[#1A222D] text-slate-400 rounded border border-slate-700">Soon</span>
+                  <span className="text-[9px] px-1 py-0.2 bg-[#151E2B] text-slate-400 rounded border border-slate-700">Soon</span>
                 </button>
               </div>
             </nav>
           </div>
 
-          {/* Quick Stats Pill */}
-          <div className="hidden lg:flex items-center space-x-3 px-3.5 py-1.5 rounded-lg bg-[#121820] border border-[#263238] shadow-inner font-mono text-xs">
-            <div className="flex items-center space-x-1 text-[#00E5FF]">
-              <span className="w-2 h-2 rounded-full bg-[#00E5FF] animate-pulse"></span>
-              <span className="font-bold">{stats.seen}</span>
-              <span className="text-slate-400">Seen</span>
+          {/* Center: Live Triage HUD (Always visible on all screens) */}
+          <div className="flex items-center space-x-2 sm:space-x-3 px-2.5 sm:px-4 py-1.5 rounded-xl bg-[#0E141D] border-2 border-[#1F2B3B] shadow-inner font-mono text-xs">
+            {/* Seen Count */}
+            <div className="flex items-center space-x-1 sm:space-x-1.5 text-[#00E5FF]">
+              <div className="w-4 h-4 rounded-full bg-[#00E5FF]/20 flex items-center justify-center border border-[#00E5FF]/40 shrink-0">
+                <Check className="w-2.5 h-2.5 stroke-[3]" />
+              </div>
+              <span className="font-bold text-xs sm:text-sm text-white">{stats.seen}</span>
+              <span className="text-slate-400 text-[10px] sm:text-[11px] hidden xs:inline">Seen</span>
             </div>
-            <span className="text-slate-600">|</span>
-            <div className="flex items-center space-x-1 text-[#FF5252]">
-              <span className="font-bold">{stats.notSeen}</span>
-              <span className="text-slate-400">No</span>
+
+            <span className="text-slate-700">/</span>
+
+            {/* Not Seen Count */}
+            <div className="flex items-center space-x-1 sm:space-x-1.5 text-[#FF334B]">
+              <div className="w-4 h-4 rounded-full bg-[#FF334B]/20 flex items-center justify-center border border-[#FF334B]/40 shrink-0">
+                <X className="w-2.5 h-2.5 stroke-[3]" />
+              </div>
+              <span className="font-bold text-xs sm:text-sm text-white">{stats.notSeen}</span>
+              <span className="text-slate-400 text-[10px] sm:text-[11px] hidden xs:inline">No</span>
             </div>
-            <span className="text-slate-600">|</span>
-            <div className="flex items-center space-x-1 text-slate-300">
-              <span className="font-bold">{stats.undecided}</span>
-              <span className="text-slate-500">Left</span>
+
+            <span className="text-slate-700">/</span>
+
+            {/* Remaining Count */}
+            <div className="flex items-center space-x-1 text-slate-400 text-[10px] sm:text-[11px]">
+              <span className="font-bold text-xs sm:text-sm text-slate-200">{stats.undecided}</span>
+              <span className="hidden xs:inline">Left</span>
             </div>
-            <div className="w-20 bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700 ml-2">
+
+            {/* Mini Progress Track */}
+            <div className="w-12 sm:w-20 bg-slate-900 rounded-full h-2.5 overflow-hidden border border-slate-800 ml-1 sm:ml-2 relative hidden xs:block">
               <div 
-                className="bg-[#00E5FF] h-full transition-all duration-300"
+                className="bg-gradient-to-r from-cyan-400 to-[#00E5FF] h-full transition-all duration-300 rounded-full"
                 style={{ width: `${stats.completionPercentage}%` }}
-              ></div>
+              />
             </div>
-            <span className="font-bold text-[#00E5FF]">{stats.completionPercentage}%</span>
+            <span className="font-bold text-[11px] sm:text-xs text-[#00E5FF]">{stats.completionPercentage}%</span>
           </div>
 
           {/* Right Action Tools */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-2.5">
             
-            {/* View Mode Toggle */}
-            <div className="flex items-center bg-[#121820] p-1 rounded-lg border border-[#263238]">
+            {/* View Mode Switcher */}
+            <div className="flex items-center bg-[#0E141D] p-1 rounded-xl border border-[#1F2B3B]">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-md flex items-center space-x-1 text-xs font-manga uppercase transition-all ${
+                className={`px-2.5 py-1.5 rounded-lg flex items-center space-x-1.5 text-xs font-manga font-bold uppercase transition-all ${
                   viewMode === 'grid'
-                    ? 'bg-[#00E5FF] text-black font-bold shadow-[0_0_10px_rgba(0,229,255,0.4)]'
+                    ? 'bg-[#00E5FF] text-black shadow-[0_0_12px_rgba(0,229,255,0.4)]'
                     : 'text-slate-400 hover:text-white'
                 }`}
                 title="Mode A: Batch Grid View"
               >
-                <LayoutGrid className="w-4 h-4" />
+                <LayoutGrid className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Grid</span>
               </button>
               <button
                 onClick={() => setViewMode('poll')}
-                className={`p-1.5 rounded-md flex items-center space-x-1 text-xs font-manga uppercase transition-all ${
+                className={`px-2.5 py-1.5 rounded-lg flex items-center space-x-1.5 text-xs font-manga font-bold uppercase transition-all ${
                   viewMode === 'poll'
-                    ? 'bg-[#00E5FF] text-black font-bold shadow-[0_0_10px_rgba(0,229,255,0.4)]'
+                    ? 'bg-[#00E5FF] text-black shadow-[0_0_12px_rgba(0,229,255,0.4)]'
                     : 'text-slate-400 hover:text-white'
                 }`}
-                title="Mode B: 1-by-1 Fast-Pick Poll"
+                title="Mode B: Fast-Pick Poll"
               >
-                <Layers className="w-4 h-4" />
+                <Layers className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Poll</span>
               </button>
             </div>
@@ -165,35 +183,36 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               onClick={() => undoLastDecision()}
               disabled={undoStack.length === 0}
-              className={`p-2 rounded-lg border border-[#263238] bg-[#121820] text-slate-300 hover:text-white hover:border-slate-500 transition-colors disabled:opacity-40 disabled:cursor-not-allowed`}
+              className="p-2 sm:px-2.5 sm:py-2 rounded-xl border border-[#1F2B3B] bg-[#0E141D] text-slate-300 hover:text-white hover:border-slate-500 transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center space-x-1 text-xs"
               title="Undo last action (Hotkey: Z)"
             >
               <Undo2 className="w-4 h-4" />
+              <span className="hidden md:inline font-mono text-[10px] text-slate-400">Z</span>
             </button>
 
-            {/* Filter Toggle Button */}
+            {/* Filter Toggle */}
             <button
               onClick={onOpenFilters}
-              className={`relative p-2 rounded-lg border bg-[#121820] transition-colors flex items-center space-x-1.5 ${
+              className={`relative p-2 sm:px-2.5 sm:py-2 rounded-xl border bg-[#0E141D] transition-colors flex items-center space-x-1.5 text-xs ${
                 activeFilterCount > 0 
-                  ? 'border-[#00E5FF] text-[#00E5FF] shadow-[0_0_10px_rgba(0,229,255,0.25)]' 
-                  : 'border-[#263238] text-slate-300 hover:text-white hover:border-slate-500'
+                  ? 'border-[#00E5FF] text-[#00E5FF] shadow-[0_0_12px_rgba(0,229,255,0.3)]' 
+                  : 'border-[#1F2B3B] text-slate-300 hover:text-white hover:border-slate-500'
               }`}
-              title="Filters & Search"
+              title="Filter & Sort"
             >
               <SlidersHorizontal className="w-4 h-4" />
               {activeFilterCount > 0 && (
-                <span className="w-4 h-4 rounded-full bg-[#00E5FF] text-black text-[10px] font-bold flex items-center justify-center">
+                <span className="w-4 h-4 rounded-full bg-[#00E5FF] text-black text-[10px] font-bold flex items-center justify-center font-mono">
                   {activeFilterCount}
                 </span>
               )}
             </button>
 
-            {/* Export Dropdown */}
+            {/* Export Menu Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setShowExportMenu(!showExportMenu)}
-                className="px-2.5 sm:px-3 py-1.5 rounded-lg border-2 border-[#263238] bg-[#121820] hover:border-[#00E5FF] text-slate-200 hover:text-white font-manga font-bold text-xs uppercase flex items-center space-x-1.5 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.5)]"
+                className="px-3 py-2 rounded-xl border-2 border-[#1F2B3B] bg-[#0E141D] hover:border-[#00E5FF] text-slate-200 hover:text-white font-manga font-bold text-xs uppercase flex items-center space-x-1.5 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.5)]"
               >
                 <Download className="w-4 h-4 text-[#00E5FF]" />
                 <span className="hidden sm:inline">Export</span>
@@ -202,11 +221,11 @@ export const Header: React.FC<HeaderProps> = ({
 
               {showExportMenu && (
                 <div 
-                  className="absolute right-0 mt-2 w-56 rounded-lg bg-[#121820] border-2 border-[#263238] shadow-2xl py-2 z-50 manga-screentone-dark animate-in fade-in zoom-in-95 duration-100"
+                  className="absolute right-0 mt-2 w-60 rounded-xl bg-[#0E141D] border-2 border-[#1F2B3B] shadow-2xl py-2 z-50 manga-screentone-dark animate-in fade-in zoom-in-95 duration-100"
                   onMouseLeave={() => setShowExportMenu(false)}
                 >
-                  <div className="px-3 py-1.5 text-[10px] font-mono uppercase text-slate-400 border-b border-[#263238]">
-                    Client-Side Downloads
+                  <div className="px-3.5 py-1.5 text-[10px] font-mono uppercase tracking-wider text-slate-400 border-b border-[#1F2B3B]">
+                    List Downloads
                   </div>
 
                   <button
@@ -214,10 +233,10 @@ export const Header: React.FC<HeaderProps> = ({
                       exportMALXML(decisions, catalog);
                       setShowExportMenu(false);
                     }}
-                    className="w-full text-left px-3 py-2 text-xs font-semibold hover:bg-[#1A222D] hover:text-[#00E5FF] flex items-center justify-between"
+                    className="w-full text-left px-3.5 py-2 text-xs font-semibold hover:bg-[#151E2B] hover:text-[#00E5FF] flex items-center justify-between"
                   >
-                    <span>MyAnimeList / AniList XML</span>
-                    <span className="text-[10px] font-mono px-1 bg-cyan-950 text-[#00E5FF] rounded">XML</span>
+                    <span>MyAnimeList / AniList</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.2 bg-cyan-950 text-[#00E5FF] rounded border border-cyan-800">XML</span>
                   </button>
 
                   <button
@@ -225,10 +244,10 @@ export const Header: React.FC<HeaderProps> = ({
                       exportStateJSON(decisions, catalog);
                       setShowExportMenu(false);
                     }}
-                    className="w-full text-left px-3 py-2 text-xs font-semibold hover:bg-[#1A222D] hover:text-[#00E5FF] flex items-center justify-between"
+                    className="w-full text-left px-3.5 py-2 text-xs font-semibold hover:bg-[#151E2B] hover:text-[#00E5FF] flex items-center justify-between"
                   >
                     <span>Full State Backup</span>
-                    <span className="text-[10px] font-mono px-1 bg-slate-800 text-slate-300 rounded">JSON</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.2 bg-slate-800 text-slate-300 rounded border border-slate-700">JSON</span>
                   </button>
 
                   <button
@@ -236,10 +255,10 @@ export const Header: React.FC<HeaderProps> = ({
                       exportDecisionsCSV(decisions, catalog);
                       setShowExportMenu(false);
                     }}
-                    className="w-full text-left px-3 py-2 text-xs font-semibold hover:bg-[#1A222D] hover:text-[#00E5FF] flex items-center justify-between"
+                    className="w-full text-left px-3.5 py-2 text-xs font-semibold hover:bg-[#151E2B] hover:text-[#00E5FF] flex items-center justify-between"
                   >
                     <span>Decisions Spreadsheet</span>
-                    <span className="text-[10px] font-mono px-1 bg-slate-800 text-slate-300 rounded">CSV</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.2 bg-slate-800 text-slate-300 rounded border border-slate-700">CSV</span>
                   </button>
 
                   <button
@@ -247,16 +266,16 @@ export const Header: React.FC<HeaderProps> = ({
                       exportSeenTXT(decisions, catalog);
                       setShowExportMenu(false);
                     }}
-                    className="w-full text-left px-3 py-2 text-xs font-semibold hover:bg-[#1A222D] hover:text-[#00E5FF] flex items-center justify-between"
+                    className="w-full text-left px-3.5 py-2 text-xs font-semibold hover:bg-[#151E2B] hover:text-[#00E5FF] flex items-center justify-between"
                   >
-                    <span>Seen Titles Plaintext</span>
-                    <span className="text-[10px] font-mono px-1 bg-slate-800 text-slate-300 rounded">TXT</span>
+                    <span>Watched Plaintext</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.2 bg-slate-800 text-slate-300 rounded border border-slate-700">TXT</span>
                   </button>
 
-                  <div className="my-1 border-t border-[#263238]"></div>
+                  <div className="my-1 border-t border-[#1F2B3B]" />
 
-                  <div className="px-3 py-1 text-[10px] font-mono uppercase text-slate-500">
-                    Cross-Platform Formats
+                  <div className="px-3.5 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-500">
+                    Cross-Platform
                   </div>
 
                   <button
@@ -264,7 +283,7 @@ export const Header: React.FC<HeaderProps> = ({
                       exportLetterboxdCSV(decisions, catalog);
                       setShowExportMenu(false);
                     }}
-                    className="w-full text-left px-3 py-1.5 text-xs hover:bg-[#1A222D] hover:text-slate-200 text-slate-400 flex items-center justify-between"
+                    className="w-full text-left px-3.5 py-1.5 text-xs hover:bg-[#151E2B] text-slate-400 hover:text-slate-200 flex items-center justify-between"
                   >
                     <span>Letterboxd / IMDb</span>
                     <span className="text-[9px] font-mono text-slate-500">CSV</span>
@@ -275,7 +294,7 @@ export const Header: React.FC<HeaderProps> = ({
                       exportGoodreadsCSV(decisions, catalog);
                       setShowExportMenu(false);
                     }}
-                    className="w-full text-left px-3 py-1.5 text-xs hover:bg-[#1A222D] hover:text-slate-200 text-slate-400 flex items-center justify-between"
+                    className="w-full text-left px-3.5 py-1.5 text-xs hover:bg-[#151E2B] text-slate-400 hover:text-slate-200 flex items-center justify-between"
                   >
                     <span>Goodreads / StoryGraph</span>
                     <span className="text-[9px] font-mono text-slate-500">CSV</span>
@@ -284,48 +303,50 @@ export const Header: React.FC<HeaderProps> = ({
               )}
             </div>
 
-            {/* Import Button */}
+            {/* Import Trigger */}
             <button
               onClick={onOpenImport}
-              className="p-2 rounded-lg border border-[#263238] bg-[#121820] text-slate-300 hover:text-[#00E5FF] hover:border-slate-500 transition-colors"
+              className="p-2 sm:p-2.5 rounded-xl border border-[#1F2B3B] bg-[#0E141D] text-slate-300 hover:text-[#00E5FF] hover:border-slate-500 transition-colors"
               title="Import JSON, XML, or CSV"
             >
               <Upload className="w-4 h-4" />
             </button>
 
-            {/* Sync Button */}
+            {/* Cloud Sync Trigger */}
             <button
               onClick={onOpenSync}
-              className="px-2.5 sm:px-3 py-1.5 rounded-lg border-2 border-[#263238] bg-[#121820] hover:border-[#00E5FF] text-slate-200 hover:text-[#00E5FF] font-manga font-bold text-xs uppercase flex items-center space-x-1.5 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.5)]"
+              className="px-2.5 sm:px-3 py-2 rounded-xl border-2 border-[#1F2B3B] bg-[#0E141D] hover:border-[#00E5FF] text-slate-200 hover:text-[#00E5FF] font-manga font-bold text-xs uppercase flex items-center space-x-1.5 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.5)]"
               title="Cloud Sync (AniList / MAL)"
             >
               <RefreshCw className="w-4 h-4 text-[#00E5FF]" />
-              <span className="hidden sm:inline">Sync</span>
+              <span className="hidden md:inline">Sync</span>
               {unsyncedChangesCount > 0 && (
-                <span className="w-2 h-2 rounded-full bg-[#00E5FF] animate-ping"></span>
+                <span className="w-2 h-2 rounded-full bg-[#00E5FF] animate-ping" />
               )}
             </button>
 
-            {/* Reset All Button (with confirmation) */}
+            {/* Reset All Progress */}
             <div className="relative">
               <button
                 onClick={() => setShowResetConfirm(!showResetConfirm)}
-                className="p-2 rounded-lg border border-[#263238] bg-[#121820] text-slate-400 hover:text-[#FF5252] hover:border-[#FF5252] transition-colors"
-                title="Reset All Progress"
+                className="p-2 sm:p-2.5 rounded-xl border border-[#1F2B3B] bg-[#0E141D] text-slate-400 hover:text-[#FF334B] hover:border-[#FF334B] transition-colors"
+                title="Reset All Local Decisions"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
 
               {showResetConfirm && (
-                <div className="absolute right-0 mt-2 w-64 p-3 rounded-lg bg-[#121820] border-2 border-[#FF5252] shadow-2xl z-50 text-xs">
-                  <div className="font-bold text-white mb-1">Clear all decisions?</div>
-                  <div className="text-slate-400 text-[11px] mb-3">
-                    This will reset your local database. Be sure to export your backup first.
+                <div className="absolute right-0 mt-2 w-72 p-4 rounded-xl bg-[#0E141D] border-2 border-[#FF334B] shadow-2xl z-50 text-xs animate-in fade-in duration-100">
+                  <div className="font-manga font-bold text-white text-sm mb-1 uppercase">
+                    Clear all decisions?
+                  </div>
+                  <div className="text-slate-400 text-xs mb-3 leading-relaxed">
+                    This resets your local database completely. Make sure to download a backup first.
                   </div>
                   <div className="flex justify-end space-x-2">
                     <button
                       onClick={() => setShowResetConfirm(false)}
-                      className="px-2 py-1 rounded bg-slate-800 text-slate-300 hover:bg-slate-700"
+                      className="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 font-mono"
                     >
                       Cancel
                     </button>
@@ -334,9 +355,9 @@ export const Header: React.FC<HeaderProps> = ({
                         resetAllDecisions();
                         setShowResetConfirm(false);
                       }}
-                      className="px-2 py-1 rounded bg-[#FF5252] text-white font-bold hover:bg-red-600"
+                      className="px-3 py-1.5 rounded-lg bg-[#FF334B] text-white font-manga font-bold uppercase hover:bg-red-600"
                     >
-                      Reset All
+                      Confirm Reset
                     </button>
                   </div>
                 </div>

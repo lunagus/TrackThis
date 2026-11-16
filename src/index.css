@@ -2,84 +2,107 @@
 
 @layer base {
   :root {
-    --canvas-bg: #0B0F14;
-    --surface-card: #121820;
-    --surface-elevated: #1A222D;
-    --border-manga: #263238;
+    --canvas-bg: #070A0E;
+    --surface-base: #0E141D;
+    --surface-elevated: #151E2B;
+    --surface-card: #111823;
+    --border-manga: #1F2B3B;
+    --border-manga-light: #2D3D52;
     --accent-cyan: #00E5FF;
-    --accent-red: #FF5252;
-    --font-heading: 'Space Grotesk', system-ui, sans-serif;
-    --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --accent-cyan-glow: rgba(0, 229, 255, 0.25);
+    --accent-crimson: #FF334B;
+    --accent-crimson-glow: rgba(255, 51, 75, 0.25);
+    --accent-amber: #FFB300;
+    --font-heading: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   }
 
   body {
     background-color: var(--canvas-bg);
-    color: #F0F6FC;
+    color: #F1F5F9;
     font-family: var(--font-sans);
+    letter-spacing: -0.01em;
   }
 
-  h1, h2, h3, h4, .font-manga {
+  h1, h2, h3, h4, h5, h6, .font-manga {
     font-family: var(--font-heading);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
   }
 }
 
-/* Halftone Screentone Pattern */
+/* Halftone Screentone Texture */
 .manga-screentone {
-  background-image: radial-gradient(rgba(0, 229, 255, 0.08) 1px, transparent 0);
-  background-size: 8px 8px;
+  background-image: radial-gradient(rgba(0, 229, 255, 0.06) 1px, transparent 0);
+  background-size: 10px 10px;
 }
 
 .manga-screentone-dark {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0);
-  background-size: 6px 6px;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+  background-size: 8px 8px;
 }
 
-/* Manga Panel Borders & Shadows */
-.manga-panel {
-  border: 2px solid #263238;
-  background-color: #121820;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+/* Card Manga Panel Styles */
+.manga-card {
+  background-color: var(--surface-card);
+  border: 2px solid var(--border-manga);
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.16s ease, 
+              box-shadow 0.16s ease;
+  position: relative;
 }
 
-.manga-panel:hover {
+.manga-card:hover {
   border-color: #FFFFFF;
-  box-shadow: 4px 4px 0px rgba(0, 229, 255, 0.35);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 4px 4px 0px rgba(0, 229, 255, 0.4);
 }
 
-.manga-panel-selected-yes {
-  border-color: #00E5FF !important;
-  box-shadow: 4px 4px 0px rgba(0, 229, 255, 0.6) !important;
+.manga-card:focus-visible {
+  outline: none;
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.4), 4px 4px 0px rgba(0, 229, 255, 0.6);
 }
 
-.manga-panel-selected-no {
-  border-color: #FF5252 !important;
-  box-shadow: 4px 4px 0px rgba(255, 82, 82, 0.4) !important;
+.manga-card-seen {
+  border-color: var(--accent-cyan) !important;
+  box-shadow: 3px 3px 0px rgba(0, 229, 255, 0.6) !important;
+}
+
+.manga-card-not-seen {
+  border-color: var(--accent-crimson) !important;
+  box-shadow: 3px 3px 0px rgba(255, 51, 75, 0.4) !important;
+  opacity: 0.75;
+}
+
+.manga-card-not-seen:hover {
+  opacity: 1;
+}
+
+/* Tactile Manga Action Pill */
+.tactile-pill {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transition: all 0.12s ease;
+}
+
+.tactile-pill:active {
+  transform: translateY(1px);
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #0B0F14;
+  background: #070A0E;
 }
 ::-webkit-scrollbar-thumb {
-  background: #263238;
+  background: #1F2B3B;
   border-radius: 4px;
-  border: 1px solid #121820;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #00E5FF;
-}
-
-/* M3 ripple & pill styling */
-.pill-button {
-  font-family: var(--font-heading);
-  text-transform: uppercase;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  transition: all 0.12s ease-in-out;
 }

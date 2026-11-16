@@ -1,5 +1,4 @@
-import React, { useMemo } from 'react';
-import { triggerMangaBurst } from '../utils/particles';
+import React, { useMemo, useState, useEffect } from 'react';
 import { 
   Check, 
   X, 
@@ -9,8 +8,13 @@ import {
   RotateCcw,
   Star,
   Tv,
-  Film
+  Film,
+  Info,
+  Calendar,
+  Building2,
+  ExternalLink
 } from 'lucide-react';
+import { triggerMangaBurst } from '../utils/particles';
 import { UnifiedMediaItem, UserDecision } from '../types/media';
 import { useMediaTrackerStore } from '../store/useMediaTrackerStore';
 
@@ -29,6 +33,9 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
     pageSize,
     setPageSize
   } = useMediaTrackerStore();
+
+  const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
+  const [previewItem, setPreviewItem] = useState<UnifiedMediaItem | null>(null);
 
   const totalPages = Math.max(1, Math.ceil(filteredItems.length / pageSize));
   const validCurrentPage = Math.min(Math.max(1, currentPage), totalPages);
@@ -52,11 +59,8 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
     }));
 
     setDecisionBatch(batch);
-
-    // Trigger visual celebratory burst
     triggerMangaBurst();
 
-    // Advance to next page if available
     if (validCurrentPage < totalPages) {
       setCurrentPage(validCurrentPage + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -66,32 +70,102 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
       setCurrentPage(newPage);
+      setFocusedIndex(null);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
+  // Spatial Keyboard Navigation across Grid
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)) {
+        return;
+      }
+
+      // Sweep shortcut: Shift + S
+      if (e.shiftKey && (e.key === 'S' || e.key === 's')) {
+        e.preventDefault();
+        handleSweepAction();
+        return;
+      }
+
+      if (pageItems.length === 0) return;
+
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        setFocusedIndex(prev => (prev === null ? 0 : Math.min(pageItems.length - 1, prev + 1)));
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setFocusedIndex(prev => (prev === null ? 0 : Math.max(0, prev - 1)));
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        // Assuming ~4-6 items per row, jump by 4 or to bottom
+        setFocusedIndex(prev => (prev === null ? 0 : Math.min(pageItems.length - 1, prev + 4)));
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setFocusedIndex(prev => (prev === null ? 0 : Math.max(0, prev - 4)));
+      } else if ((e.key === 'y' || e.key === 'Y') && focusedIndex !== null) {
+        e.preventDefault();
+        const target = pageItems[focusedIndex];
+        if (target) {
+          setDecision(target.id, 'SEEN');
+          // auto advance focus
+          setFocusedIndex(prev => (prev !== null && prev < pageItems.length - 1 ? prev + 1 : prev));
+        }
+      } else if ((e.key === 'n' || e.key === 'N') && focusedIndex !== null) {
+        e.preventDefault();
+        const target = pageItems[focusedIndex];
+        if (target) {
+          setDecision(target.id, 'NOT_SEEN');
+          setFocusedIndex(prev => (prev !== null && prev < pageItems.length - 1 ? prev + 1 : prev));
+        }
+      } else if (e.key === ' ' && focusedIndex !== null) {
+        e.preventDefault();
+        const target = pageItems[focusedIndex];
+        if (target) {
+          setPreviewItem(target);
+        }
+      } else if (e.key === 'Escape') {
+        setPreviewItem(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [pageItems, focusedIndex, undecidedOnPage, validCurrentPage, totalPages]);
+
   return (
-    <div className="flex flex-col min-h-screen pb-32">
+    <div className="flex flex-col min-h-screen pb-36">
       
-      {/* Top Page Sub-Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 bg-[#121820]/70 border-b border-[#263238] rounded-t-lg">
-        <div className="text-xs font-mono text-slate-400">
-          Showing <span className="font-bold text-white">{pageItems.length}</span> of{' '}
-          <span className="font-bold text-[#00E5FF]">{filteredItems.length}</span> titles
-          (Page {validCurrentPage} of {totalPages})
+      {/* Sub-Header Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 bg-[#0E141D]/80 backdrop-blur-md border border-[#1F2B3B] rounded-2xl mb-4">
+        <div className="text-xs font-mono text-slate-400 flex items-center space-x-2">
+          <span>Catalog Pool:</span>
+          <span className="font-bold text-white font-mono">{filteredItems.length} titles</span>
+          <span className="text-slate-600">•</span>
+          <span>Page <strong className="text-[#00E5FF]">{validCurrentPage}</strong> of {totalPages}</span>
+        </div>
+
+        {/* Keyboard Hint Pill */}
+        <div className="hidden lg:flex items-center space-x-2 text-[11px] font-mono text-slate-400">
+          <span className="text-slate-500">Keyboard Triage:</span>
+          <span className="px-1.5 py-0.5 rounded bg-[#151E2B] text-slate-300 border border-slate-700">Arrows: Navigate</span>
+          <span className="px-1.5 py-0.5 rounded bg-[#151E2B] text-[#00E5FF] border border-cyan-800">Y: Seen</span>
+          <span className="px-1.5 py-0.5 rounded bg-[#151E2B] text-[#FF334B] border border-red-800">N: No</span>
+          <span className="px-1.5 py-0.5 rounded bg-[#151E2B] text-slate-300 border border-slate-700">Shift+S: Sweep</span>
         </div>
 
         {/* Page Size Selector */}
-        <div className="flex items-center space-x-2 text-xs font-mono">
-          <span className="text-slate-400">Page size:</span>
+        <div className="flex items-center space-x-1.5 text-xs font-mono">
+          <span className="text-slate-400 hidden sm:inline">Per page:</span>
           {[24, 48, 100, 250, 500].map(size => (
             <button
               key={size}
               onClick={() => setPageSize(size)}
-              className={`px-2 py-0.5 rounded font-bold transition-colors ${
+              className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
                 pageSize === size
-                  ? 'bg-[#00E5FF] text-black'
-                  : 'bg-[#1A222D] text-slate-400 hover:text-white border border-[#263238]'
+                  ? 'bg-[#00E5FF] text-black shadow-[0_0_10px_rgba(0,229,255,0.3)]'
+                  : 'bg-[#151E2B] text-slate-400 hover:text-white border border-[#1F2B3B]'
               }`}
             >
               {size}
@@ -102,102 +176,159 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
 
       {/* Grid Canvas */}
       {filteredItems.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center px-4">
-          <div className="w-16 h-16 rounded-full bg-[#121820] border-2 border-[#263238] flex items-center justify-center text-slate-500 mb-4">
+        <div className="flex flex-col items-center justify-center py-28 text-center px-4 bg-[#0E141D]/40 rounded-2xl border-2 border-dashed border-[#1F2B3B]">
+          <div className="w-16 h-16 rounded-full bg-[#151E2B] border-2 border-[#1F2B3B] flex items-center justify-center text-slate-500 mb-4">
             <X className="w-8 h-8" />
           </div>
-          <h3 className="text-lg font-bold font-manga text-white mb-1">NO TITLES FOUND</h3>
-          <p className="text-xs font-mono text-slate-400 max-w-sm">
-            Try adjusting your search query, genre tags, or active demographic filters.
+          <h3 className="text-xl font-bold font-manga text-white uppercase tracking-wider mb-2">
+            No Titles Matched Filters
+          </h3>
+          <p className="text-xs font-mono text-slate-400 max-w-md">
+            No media entries found matching your active criteria. Try loosening search terms or demographic filters.
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 p-3 sm:p-4">
-          {pageItems.map(item => {
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
+          {pageItems.map((item, index) => {
             const decision: UserDecision | undefined = decisions[item.id];
             const isSeen = decision?.status === 'SEEN';
             const isNotSeen = decision?.status === 'NOT_SEEN';
             const isUndecided = !decision;
+            const isFocused = focusedIndex === index;
 
-            let cardBorderClass = 'manga-panel';
-            if (isSeen) cardBorderClass = 'manga-panel manga-panel-selected-yes';
-            if (isNotSeen) cardBorderClass = 'manga-panel manga-panel-selected-no';
+            let cardStateClass = 'manga-card';
+            if (isSeen) cardStateClass += ' manga-card-seen';
+            if (isNotSeen) cardStateClass += ' manga-card-not-seen';
+            if (isFocused) cardStateClass += ' ring-2 ring-[#00E5FF] shadow-[0_0_15px_rgba(0,229,255,0.4)]';
 
             return (
               <div
                 key={item.id}
-                className={`relative rounded-lg overflow-hidden flex flex-col group ${cardBorderClass}`}
+                tabIndex={0}
+                onFocus={() => setFocusedIndex(index)}
+                className={`rounded-xl overflow-hidden flex flex-col group cursor-pointer ${cardStateClass}`}
               >
                 {/* Poster Container */}
-                <div className="relative aspect-[2/3] w-full overflow-hidden bg-slate-900">
+                <div className="relative aspect-[3/4] w-full overflow-hidden bg-slate-950">
                   <img
                     src={item.posterImage}
                     alt={item.title.english || item.title.romaji}
                     loading="lazy"
                     referrerPolicy="no-referrer"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 0 200 300"><rect width="200" height="300" fill="%23121820"/><rect x="10" y="10" width="180" height="280" rx="8" fill="none" stroke="%23263238" stroke-width="2"/><text x="100" y="145" fill="%2300E5FF" font-family="sans-serif" font-weight="bold" font-size="16" text-anchor="middle">TRACKTHIS</text><text x="100" y="170" fill="%2394a3b8" font-family="sans-serif" font-size="11" text-anchor="middle">No Image</text></svg>';
+                      (e.target as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 0 200 300"><rect width="200" height="300" fill="%230E141D"/><rect x="10" y="10" width="180" height="280" rx="8" fill="none" stroke="%231F2B3B" stroke-width="2"/><text x="100" y="145" fill="%2300E5FF" font-family="sans-serif" font-weight="bold" font-size="16" text-anchor="middle">TRACKTHIS</text><text x="100" y="170" fill="%2394a3b8" font-family="sans-serif" font-size="11" text-anchor="middle">No Image</text></svg>';
                     }}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
 
-                  {/* Format & Score Badges */}
-                  <div className="absolute top-1.5 left-1.5 flex flex-wrap gap-1">
-                    <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded bg-black/80 backdrop-blur-xs text-[#00E5FF] border border-[#00E5FF]/40 flex items-center space-x-0.5">
+                  {/* Top Badges (Format & Rating) */}
+                  <div className="absolute top-2 left-2 flex items-center space-x-1">
+                    <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded-md bg-black/85 backdrop-blur-md text-[#00E5FF] border border-[#00E5FF]/30 flex items-center space-x-0.5">
                       {item.format === 'Movie' ? (
-                        <Film className="w-2.5 h-2.5 inline mr-0.5" />
+                        <Film className="w-2.5 h-2.5 mr-0.5" />
                       ) : (
-                        <Tv className="w-2.5 h-2.5 inline mr-0.5" />
+                        <Tv className="w-2.5 h-2.5 mr-0.5" />
                       )}
                       <span>{item.format}</span>
                     </span>
-                    <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded bg-black/80 backdrop-blur-xs text-amber-400 border border-amber-400/40 flex items-center space-x-0.5">
-                      <Star className="w-2.5 h-2.5 inline fill-amber-400 mr-0.5" />
+                    <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded-md bg-black/85 backdrop-blur-md text-amber-300 border border-amber-400/30 flex items-center space-x-0.5">
+                      <Star className="w-2.5 h-2.5 fill-amber-300 mr-0.5" />
                       <span>{item.score.toFixed(1)}</span>
                     </span>
                   </div>
 
                   {/* Year Tag */}
-                  <div className="absolute top-1.5 right-1.5">
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/80 text-slate-300 border border-slate-700">
+                  <div className="absolute top-2 right-2">
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-black/85 text-slate-300 border border-slate-700">
                       {item.year}
                     </span>
                   </div>
 
-                  {/* Decision Overlay Indicator */}
-                  {!isUndecided && (
-                    <div 
-                      className={`absolute inset-0 bg-black/30 backdrop-blur-[1px] flex items-center justify-center transition-opacity pointer-events-none`}
-                    >
-                      {isSeen && (
-                        <div className="w-12 h-12 rounded-full bg-[#00E5FF] text-black flex items-center justify-center shadow-[0_0_15px_#00E5FF] border-2 border-white">
-                          <Check className="w-7 h-7 stroke-[3]" />
-                        </div>
-                      )}
-                      {isNotSeen && (
-                        <div className="w-12 h-12 rounded-full bg-[#FF5252] text-white flex items-center justify-center shadow-[0_0_15px_#FF5252] border-2 border-white">
-                          <X className="w-7 h-7 stroke-[3]" />
-                        </div>
-                      )}
+                  {/* Decided Corner Ribbon Badges */}
+                  {isSeen && (
+                    <div className="absolute top-0 right-0 w-12 h-12 overflow-hidden pointer-events-none">
+                      <div className="bg-[#00E5FF] text-black text-[9px] font-black font-manga uppercase tracking-widest text-center py-1 absolute transform rotate-45 top-2.5 -right-3.5 w-16 shadow-lg border-b border-black">
+                        SEEN
+                      </div>
                     </div>
                   )}
 
-                  {/* Reset pill on card hover if already decided */}
-                  {!isUndecided && (
-                    <button
-                      onClick={() => clearDecision(item.id)}
-                      className="absolute bottom-2 right-2 p-1.5 rounded-full bg-black/80 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors border border-slate-700 z-10 opacity-0 group-hover:opacity-100"
-                      title="Reset to undecided"
-                    >
-                      <RotateCcw className="w-3.5 h-3.5" />
-                    </button>
+                  {isNotSeen && (
+                    <div className="absolute top-0 right-0 w-12 h-12 overflow-hidden pointer-events-none">
+                      <div className="bg-[#FF334B] text-white text-[9px] font-black font-manga uppercase tracking-widest text-center py-1 absolute transform rotate-45 top-2.5 -right-3.5 w-16 shadow-lg border-b border-black">
+                        NO
+                      </div>
+                    </div>
                   )}
+
+                  {/* Quick-Action Hover Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-2.5 flex flex-col justify-end gap-2">
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDecision(item.id, 'SEEN');
+                        }}
+                        className={`py-2 px-2 rounded-lg font-manga font-bold text-xs uppercase flex items-center justify-center space-x-1 border transition-all shadow-md ${
+                          isSeen
+                            ? 'bg-[#00E5FF] text-black border-[#00E5FF]'
+                            : 'bg-[#0E141D]/90 text-[#00E5FF] border-[#00E5FF]/60 hover:bg-[#00E5FF] hover:text-black'
+                        }`}
+                      >
+                        <Check className="w-3.5 h-3.5 stroke-[3]" />
+                        <span>YES</span>
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDecision(item.id, 'NOT_SEEN');
+                        }}
+                        className={`py-2 px-2 rounded-lg font-manga font-bold text-xs uppercase flex items-center justify-center space-x-1 border transition-all shadow-md ${
+                          isNotSeen
+                            ? 'bg-[#FF334B] text-white border-[#FF334B]'
+                            : 'bg-[#0E141D]/90 text-[#FF334B] border-[#FF334B]/60 hover:bg-[#FF334B] hover:text-white'
+                        }`}
+                      >
+                        <X className="w-3.5 h-3.5 stroke-[3]" />
+                        <span>NO</span>
+                      </button>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setPreviewItem(item);
+                        }}
+                        className="p-1 rounded-md bg-[#151E2B] text-slate-300 hover:text-white text-[10px] font-mono flex items-center space-x-1 border border-slate-700"
+                        title="View Full Details"
+                      >
+                        <Info className="w-3 h-3" />
+                        <span>Details</span>
+                      </button>
+
+                      {!isUndecided && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            clearDecision(item.id);
+                          }}
+                          className="p-1 rounded-md bg-[#151E2B] text-slate-400 hover:text-white text-[10px] font-mono flex items-center space-x-1 border border-slate-700"
+                          title="Reset to undecided"
+                        >
+                          <RotateCcw className="w-3 h-3" />
+                          <span>Reset</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
-                {/* Details Section */}
-                <div className="p-2 sm:p-2.5 flex-1 flex flex-col justify-between bg-[#121820]">
+                {/* Card Info Footer */}
+                <div className="p-3 flex-1 flex flex-col justify-between bg-[#111823]">
                   <div>
-                    {/* Demographics Pill */}
+                    {/* Demographics Tag */}
                     {item.demographics.length > 0 && (
                       <span className="text-[9px] uppercase font-bold tracking-widest text-[#00E5FF] mb-0.5 block truncate">
                         {item.demographics.join(' / ')}
@@ -212,104 +343,98 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
                       {item.title.english || item.title.romaji}
                     </h4>
                     <p 
-                      className="text-[10px] text-slate-400 font-mono truncate mb-1"
+                      className="text-[10px] text-slate-400 font-mono truncate mb-2"
                       title={item.title.romaji}
                     >
                       {item.title.romaji}
                     </p>
-
-                    {/* Genre tags */}
-                    <div className="flex flex-wrap gap-1 mb-2">
-                      {item.genres.slice(0, 2).map(genre => (
-                        <span 
-                          key={genre}
-                          className="text-[9px] px-1 py-0.2 rounded bg-[#1A222D] text-slate-300 border border-slate-800"
-                        >
-                          {genre}
-                        </span>
-                      ))}
-                    </div>
                   </div>
 
-                  {/* Dual Action Decision Pills */}
-                  <div className="grid grid-cols-2 gap-1.5 pt-1.5 border-t border-[#263238]">
+                  {/* Tactile Status Pills (Visible permanently below card) */}
+                  <div className="grid grid-cols-2 gap-1.5 pt-2 border-t border-[#1F2B3B]">
                     <button
-                      onClick={() => setDecision(item.id, 'SEEN')}
-                      className={`pill-button py-1.5 px-2 text-[11px] rounded flex items-center justify-center space-x-1 border transition-all ${
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDecision(item.id, 'SEEN');
+                      }}
+                      className={`tactile-pill py-1.5 px-2 text-[10px] rounded-md flex items-center justify-center space-x-1 border transition-all ${
                         isSeen
-                          ? 'bg-[#00E5FF] text-black border-[#00E5FF] font-black shadow-[0_0_8px_rgba(0,229,255,0.6)]'
-                          : 'bg-[#1A222D] text-slate-300 border-[#263238] hover:border-[#00E5FF] hover:text-[#00E5FF]'
+                          ? 'bg-[#00E5FF] text-black border-[#00E5FF] font-black shadow-[0_0_8px_rgba(0,229,255,0.5)]'
+                          : 'bg-[#151E2B] text-slate-300 border-[#1F2B3B] hover:border-[#00E5FF] hover:text-[#00E5FF]'
                       }`}
                     >
-                      <Check className="w-3.5 h-3.5" />
+                      <Check className="w-3 h-3 stroke-[3]" />
                       <span>YES</span>
                     </button>
 
                     <button
-                      onClick={() => setDecision(item.id, 'NOT_SEEN')}
-                      className={`pill-button py-1.5 px-2 text-[11px] rounded flex items-center justify-center space-x-1 border transition-all ${
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDecision(item.id, 'NOT_SEEN');
+                      }}
+                      className={`tactile-pill py-1.5 px-2 text-[10px] rounded-md flex items-center justify-center space-x-1 border transition-all ${
                         isNotSeen
-                          ? 'bg-[#FF5252] text-white border-[#FF5252] font-black shadow-[0_0_8px_rgba(255,82,82,0.6)]'
-                          : 'bg-[#1A222D] text-slate-300 border-[#263238] hover:border-[#FF5252] hover:text-[#FF5252]'
+                          ? 'bg-[#FF334B] text-white border-[#FF334B] font-black shadow-[0_0_8px_rgba(255,51,75,0.5)]'
+                          : 'bg-[#151E2B] text-slate-300 border-[#1F2B3B] hover:border-[#FF334B] hover:text-[#FF334B]'
                       }`}
                     >
-                      <X className="w-3.5 h-3.5" />
+                      <X className="w-3 h-3 stroke-[3]" />
                       <span>NO</span>
                     </button>
                   </div>
-
                 </div>
+
               </div>
             );
           })}
         </div>
       )}
 
-      {/* Floating Bottom Action Bar (Sweep Mode + Pagination) */}
-      <div className="fixed bottom-0 left-0 right-0 z-30 bg-[#0B0F14]/95 backdrop-blur-md border-t-2 border-[#263238] p-3 shadow-2xl">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      {/* Floating Tactical Command Dock (Sweep Mode + Pagination) */}
+      <div className="fixed bottom-4 left-3 right-3 sm:left-6 sm:right-6 max-w-5xl mx-auto z-30">
+        <div className="p-3 sm:p-3.5 rounded-2xl bg-[#070A0E]/90 backdrop-blur-xl border-2 border-[#1F2B3B] shadow-[0_10px_35px_rgba(0,0,0,0.8)] flex flex-col sm:flex-row items-center justify-between gap-3">
           
-          {/* Sweep Action Button */}
+          {/* Sweep Mode Action */}
           <div className="w-full sm:w-auto">
             <button
               onClick={handleSweepAction}
               disabled={undecidedOnPage.length === 0}
-              className={`w-full sm:w-auto px-4 py-2 rounded-lg font-manga font-bold text-xs uppercase tracking-wider flex items-center justify-center space-x-2 border-2 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.6)] ${
+              className={`w-full sm:w-auto px-4 py-2.5 rounded-xl font-manga font-bold text-xs uppercase tracking-wider flex items-center justify-center space-x-2 border-2 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.6)] active:translate-y-0.5 ${
                 undecidedOnPage.length > 0
-                  ? 'bg-[#121820] text-[#00E5FF] border-[#00E5FF] hover:bg-[#00E5FF] hover:text-black shadow-[0_0_15px_rgba(0,229,255,0.25)]'
-                  : 'bg-[#121820] text-slate-500 border-[#263238] opacity-50 cursor-not-allowed'
+                  ? 'bg-[#0E141D] text-[#00E5FF] border-[#00E5FF] hover:bg-[#00E5FF] hover:text-black shadow-[0_0_15px_rgba(0,229,255,0.3)]'
+                  : 'bg-[#0E141D] text-slate-600 border-[#1F2B3B] opacity-50 cursor-not-allowed'
               }`}
             >
-              <CheckCheck className="w-4 h-4" />
-              <span>Mark Remaining on Page as No & Advance</span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-black/40 border border-current">
-                {undecidedOnPage.length} left
+              <CheckCheck className="w-4 h-4 stroke-[2.5]" />
+              <span>Sweep Remaining as No</span>
+              <span className="px-2 py-0.5 rounded-md text-[10px] font-mono bg-black/50 border border-current">
+                {undecidedOnPage.length} unreviewed
               </span>
             </button>
           </div>
 
-          {/* Pagination Navigation */}
-          <div className="flex items-center space-x-1 sm:space-x-2">
+          {/* Pagination Controls */}
+          <div className="flex items-center space-x-1.5 sm:space-x-2">
             <button
               onClick={() => handlePageChange(validCurrentPage - 1)}
               disabled={validCurrentPage <= 1}
-              className="p-1.5 sm:px-3 sm:py-1.5 rounded-lg border border-[#263238] bg-[#121820] text-slate-300 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed flex items-center space-x-1 text-xs font-mono"
+              className="px-3 py-2 rounded-xl border border-[#1F2B3B] bg-[#0E141D] text-slate-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed flex items-center space-x-1 text-xs font-mono"
             >
               <ChevronLeft className="w-4 h-4" />
               <span className="hidden sm:inline">Prev</span>
             </button>
 
-            {/* Quick Page Indicator */}
-            <div className="px-3 py-1 rounded bg-[#121820] border border-[#263238] text-xs font-mono text-slate-300">
-              <span className="font-bold text-[#00E5FF]">{validCurrentPage}</span>
+            {/* Current Page Pill */}
+            <div className="px-3.5 py-1.5 rounded-xl bg-[#0E141D] border-2 border-[#1F2B3B] text-xs font-mono text-slate-300">
+              <span className="font-bold text-[#00E5FF] text-sm">{validCurrentPage}</span>
               <span className="text-slate-500"> / </span>
-              <span>{totalPages}</span>
+              <span className="font-bold text-slate-300">{totalPages}</span>
             </div>
 
             <button
               onClick={() => handlePageChange(validCurrentPage + 1)}
               disabled={validCurrentPage >= totalPages}
-              className="p-1.5 sm:px-3 sm:py-1.5 rounded-lg border border-[#263238] bg-[#121820] text-slate-300 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed flex items-center space-x-1 text-xs font-mono"
+              className="px-3 py-2 rounded-xl border border-[#1F2B3B] bg-[#0E141D] text-slate-300 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed flex items-center space-x-1 text-xs font-mono"
             >
               <span className="hidden sm:inline">Next</span>
               <ChevronRight className="w-4 h-4" />
@@ -318,6 +443,104 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
 
         </div>
       </div>
+
+      {/* Quick Details Modal Popover */}
+      {previewItem && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-black/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="relative w-full max-w-2xl bg-[#0E141D] border-2 border-[#1F2B3B] rounded-2xl shadow-2xl overflow-hidden flex flex-col manga-screentone-dark animate-in fade-in zoom-in-95 duration-150">
+            
+            {/* Modal Header Banner */}
+            <div className="relative h-44 w-full bg-slate-950 overflow-hidden">
+              <img
+                src={previewItem.bannerImage || previewItem.posterImage}
+                alt="Banner"
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover opacity-30 filter blur-xs"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0E141D] to-transparent" />
+              <button
+                onClick={() => setPreviewItem(null)}
+                className="absolute top-3 right-3 p-1.5 rounded-lg bg-black/60 text-slate-400 hover:text-white border border-slate-700"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 -mt-20 relative z-10 flex flex-col sm:flex-row gap-5">
+              <div className="w-32 aspect-[2/3] shrink-0 rounded-xl overflow-hidden border-2 border-white shadow-xl bg-slate-900 mx-auto sm:mx-0">
+                <img
+                  src={previewItem.posterImage}
+                  alt={previewItem.title.english}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <div className="flex-1">
+                <div className="flex items-center space-x-2 text-xs font-mono text-[#00E5FF] mb-1">
+                  <span>{previewItem.demographics.join(' • ')}</span>
+                  <span>•</span>
+                  <span>{previewItem.format}</span>
+                  <span>•</span>
+                  <span>Score: {previewItem.score.toFixed(1)}</span>
+                </div>
+
+                <h3 className="text-xl font-extrabold font-manga text-white mb-1">
+                  {previewItem.title.english || previewItem.title.romaji}
+                </h3>
+                <div className="text-xs font-mono text-slate-400 mb-3">
+                  {previewItem.title.romaji}
+                </div>
+
+                <p className="text-xs text-slate-300 leading-relaxed font-sans line-clamp-6 mb-4">
+                  {previewItem.synopsis}
+                </p>
+
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  {previewItem.genres.map(genre => (
+                    <span
+                      key={genre}
+                      className="px-2 py-0.5 rounded bg-[#151E2B] text-slate-300 text-[10px] font-mono border border-slate-800"
+                    >
+                      {genre}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex items-center justify-between pt-3 border-t border-[#1F2B3B] text-xs font-mono text-slate-400">
+                  <span>Studio: {previewItem.studios.join(', ')}</span>
+                  <span>Year: {previewItem.year}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Actions */}
+            <div className="p-4 border-t-2 border-[#1F2B3B] bg-[#070A0E] flex justify-end space-x-3">
+              <button
+                onClick={() => {
+                  setDecision(previewItem.id, 'NOT_SEEN');
+                  setPreviewItem(null);
+                }}
+                className="px-4 py-2 rounded-xl bg-[#0E141D] text-[#FF334B] border border-[#FF334B] font-manga font-bold text-xs uppercase hover:bg-[#FF334B] hover:text-white transition-colors"
+              >
+                Mark as Not Seen
+              </button>
+
+              <button
+                onClick={() => {
+                  setDecision(previewItem.id, 'SEEN');
+                  setPreviewItem(null);
+                }}
+                className="px-4 py-2 rounded-xl bg-[#00E5FF] text-black font-manga font-bold text-xs uppercase hover:bg-cyan-300 transition-colors shadow-[2px_2px_0px_rgba(0,0,0,0.6)]"
+              >
+                Mark as Seen
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
 
     </div>
   );
