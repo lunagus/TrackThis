@@ -134,9 +134,9 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
                     src={item.posterImage}
                     alt={item.title.english || item.title.romaji}
                     loading="lazy"
+                    referrerPolicy="no-referrer"
                     onError={(e) => {
-                      // Fallback to placeholder SVG poster
-                      (e.target as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 0 200 300"><rect width="200" height="300" fill="%23121820"/><text x="100" y="150" fill="%2300E5FF" font-family="sans-serif" font-size="14" text-anchor="middle">TrackThis</text></svg>';
+                      (e.target as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 0 200 300"><rect width="200" height="300" fill="%23121820"/><rect x="10" y="10" width="180" height="280" rx="8" fill="none" stroke="%23263238" stroke-width="2"/><text x="100" y="145" fill="%2300E5FF" font-family="sans-serif" font-weight="bold" font-size="16" text-anchor="middle">TRACKTHIS</text><text x="100" y="170" fill="%2394a3b8" font-family="sans-serif" font-size="11" text-anchor="middle">No Image</text></svg>';
                     }}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />

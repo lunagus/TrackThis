@@ -223,6 +223,7 @@ export const ModeBPoll: React.FC<ModeBPollProps> = ({ filteredItems }) => {
           <img
             src={currentItem.bannerImage || currentItem.posterImage}
             alt="Backdrop"
+            referrerPolicy="no-referrer"
             className="w-full h-full object-cover opacity-25 filter blur-xs scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#121820] via-[#121820]/70 to-transparent"></div>
@@ -270,9 +271,10 @@ export const ModeBPoll: React.FC<ModeBPollProps> = ({ filteredItems }) => {
             <img
               src={currentItem.posterImage}
               alt={currentItem.title.english}
+              referrerPolicy="no-referrer"
               className="w-full h-full object-cover"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 0 200 300"><rect width="200" height="300" fill="%23121820"/><text x="100" y="150" fill="%2300E5FF" font-family="sans-serif" font-size="14" text-anchor="middle">TrackThis</text></svg>';
+                (e.target as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="300" viewBox="0 0 200 300"><rect width="200" height="300" fill="%23121820"/><rect x="10" y="10" width="180" height="280" rx="8" fill="none" stroke="%23263238" stroke-width="2"/><text x="100" y="145" fill="%2300E5FF" font-family="sans-serif" font-weight="bold" font-size="16" text-anchor="middle">TRACKTHIS</text><text x="100" y="170" fill="%2394a3b8" font-family="sans-serif" font-size="11" text-anchor="middle">No Image</text></svg>';
               }}
             />
           </div>
