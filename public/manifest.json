@@ -1,0 +1,16 @@
+{
+  "short_name": "TrackThis",
+  "name": "TrackThis - High-Velocity Local-First Media Tracker",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512 192x192 any",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/anime",
+  "background_color": "#0B0F14",
+  "theme_color": "#00E5FF",
+  "display": "standalone"
+}
