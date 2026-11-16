@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import confetti from 'canvas-confetti';
+import { triggerMangaBurst } from '../utils/particles';
 import { 
   Check, 
   X, 
@@ -53,13 +53,8 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
 
     setDecisionBatch(batch);
 
-    // Confetti effect (no emojis)
-    confetti({
-      particleCount: 50,
-      spread: 60,
-      origin: { y: 0.85 },
-      colors: ['#00E5FF', '#FFFFFF', '#263238']
-    });
+    // Trigger visual celebratory burst
+    triggerMangaBurst();
 
     // Advance to next page if available
     if (validCurrentPage < totalPages) {
