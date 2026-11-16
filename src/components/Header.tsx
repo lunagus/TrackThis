@@ -60,9 +60,9 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Left: Branding & Category Selector */}
           <div className="flex items-center space-x-3 sm:space-x-5 shrink-0">
             <div className="flex items-center space-x-2.5 sm:space-x-3 group cursor-pointer">
-              {/* Cyan Heart + Plus Logo */}
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full p-[2px] bg-gradient-to-tr from-[#00E5FF] via-cyan-300 to-white/40 shadow-[0_0_16px_rgba(0,229,255,0.45)] group-hover:scale-105 transition-transform shrink-0">
-                <img src="/icon.svg" alt="TrackThis Icon" className="w-full h-full object-contain" />
+              {/* Cyan Heart + Plus Logo (Crisp free-to-use vector without glossy gradient) */}
+              <div className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 group-hover:scale-105 transition-transform">
+                <img src="/icon.svg" alt="TrackThis Logo" className="w-full h-full object-contain" />
               </div>
 
               <div>

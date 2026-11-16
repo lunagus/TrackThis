@@ -208,8 +208,12 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
                 onFocus={() => setFocusedIndex(index)}
                 className={`rounded-xl overflow-hidden flex flex-col group cursor-pointer ${cardStateClass}`}
               >
-                {/* Poster Container */}
-                <div className="relative aspect-[3/4] w-full overflow-hidden bg-slate-950">
+                {/* Poster Container - Clean artwork without redundant hover overlay */}
+                <div 
+                  onClick={() => setPreviewItem(item)}
+                  className="relative aspect-[3/4] w-full overflow-hidden bg-slate-950 cursor-pointer"
+                  title="Click to view full details"
+                >
                   <img
                     src={item.posterImage}
                     alt={item.title.english || item.title.romaji}
@@ -222,8 +226,8 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
                   />
 
                   {/* Top Badges (Format & Rating) */}
-                  <div className="absolute top-2 left-2 flex items-center space-x-1">
-                    <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded-md bg-black/85 backdrop-blur-md text-[#00E5FF] border border-[#00E5FF]/30 flex items-center space-x-0.5">
+                  <div className="absolute top-2 left-2 flex items-center space-x-1 pointer-events-none">
+                    <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded-md bg-black/90 text-[#00E5FF] border border-[#00E5FF]/40 flex items-center space-x-1 shadow-sm">
                       {item.format === 'Movie' ? (
                         <Film className="w-2.5 h-2.5 mr-0.5" />
                       ) : (
@@ -231,154 +235,118 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
                       )}
                       <span>{item.format}</span>
                     </span>
-                    <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded-md bg-black/85 backdrop-blur-md text-amber-300 border border-amber-400/30 flex items-center space-x-0.5">
+                    <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded-md bg-black/90 text-amber-300 border border-amber-400/40 flex items-center space-x-0.5 shadow-sm">
                       <Star className="w-2.5 h-2.5 fill-amber-300 mr-0.5" />
                       <span>{item.score.toFixed(1)}</span>
                     </span>
                   </div>
 
                   {/* Year Tag */}
-                  <div className="absolute top-2 right-2">
-                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-black/85 text-slate-300 border border-slate-700">
+                  <div className="absolute top-2 right-2 pointer-events-none">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/90 text-slate-200 border border-slate-700 shadow-sm">
                       {item.year}
                     </span>
                   </div>
 
-                  {/* Decided Corner Ribbon Badges */}
+                  {/* Decided Solid Material Ribbon Badges */}
                   {isSeen && (
-                    <div className="absolute top-0 right-0 w-12 h-12 overflow-hidden pointer-events-none">
-                      <div className="bg-[#00E5FF] text-black text-[9px] font-black font-manga uppercase tracking-widest text-center py-1 absolute transform rotate-45 top-2.5 -right-3.5 w-16 shadow-lg border-b border-black">
-                        SEEN
-                      </div>
+                    <div className="absolute bottom-2 left-2 pointer-events-none">
+                      <span className="px-2.5 py-1 rounded-md bg-[#00E5FF] text-black text-[11px] font-black font-manga uppercase tracking-wider flex items-center space-x-1 shadow-md border border-white">
+                        <Check className="w-3.5 h-3.5 stroke-[3]" />
+                        <span>SEEN</span>
+                      </span>
                     </div>
                   )}
 
                   {isNotSeen && (
-                    <div className="absolute top-0 right-0 w-12 h-12 overflow-hidden pointer-events-none">
-                      <div className="bg-[#FF334B] text-white text-[9px] font-black font-manga uppercase tracking-widest text-center py-1 absolute transform rotate-45 top-2.5 -right-3.5 w-16 shadow-lg border-b border-black">
-                        NO
-                      </div>
+                    <div className="absolute bottom-2 left-2 pointer-events-none">
+                      <span className="px-2.5 py-1 rounded-md bg-[#FF334B] text-white text-[11px] font-black font-manga uppercase tracking-wider flex items-center space-x-1 shadow-md border border-white">
+                        <X className="w-3.5 h-3.5 stroke-[3]" />
+                        <span>NO</span>
+                      </span>
                     </div>
                   )}
 
-                  {/* Quick-Action Hover Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-2.5 flex flex-col justify-end gap-2">
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setDecision(item.id, 'SEEN');
-                        }}
-                        className={`py-2 px-2 rounded-lg font-manga font-bold text-xs uppercase flex items-center justify-center space-x-1 border transition-all shadow-md ${
-                          isSeen
-                            ? 'bg-[#00E5FF] text-black border-[#00E5FF]'
-                            : 'bg-[#0E141D]/90 text-[#00E5FF] border-[#00E5FF]/60 hover:bg-[#00E5FF] hover:text-black'
-                        }`}
-                      >
-                        <Check className="w-3.5 h-3.5 stroke-[3]" />
-                        <span>YES</span>
-                      </button>
-
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setDecision(item.id, 'NOT_SEEN');
-                        }}
-                        className={`py-2 px-2 rounded-lg font-manga font-bold text-xs uppercase flex items-center justify-center space-x-1 border transition-all shadow-md ${
-                          isNotSeen
-                            ? 'bg-[#FF334B] text-white border-[#FF334B]'
-                            : 'bg-[#0E141D]/90 text-[#FF334B] border-[#FF334B]/60 hover:bg-[#FF334B] hover:text-white'
-                        }`}
-                      >
-                        <X className="w-3.5 h-3.5 stroke-[3]" />
-                        <span>NO</span>
-                      </button>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setPreviewItem(item);
-                        }}
-                        className="p-1 rounded-md bg-[#151E2B] text-slate-300 hover:text-white text-[10px] font-mono flex items-center space-x-1 border border-slate-700"
-                        title="View Full Details"
-                      >
-                        <Info className="w-3 h-3" />
-                        <span>Details</span>
-                      </button>
-
-                      {!isUndecided && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            clearDecision(item.id);
-                          }}
-                          className="p-1 rounded-md bg-[#151E2B] text-slate-400 hover:text-white text-[10px] font-mono flex items-center space-x-1 border border-slate-700"
-                          title="Reset to undecided"
-                        >
-                          <RotateCcw className="w-3 h-3" />
-                          <span>Reset</span>
-                        </button>
-                      )}
-                    </div>
-                  </div>
+                  {/* Reset pill on card if already decided */}
+                  {!isUndecided && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        clearDecision(item.id);
+                      }}
+                      className="absolute bottom-2 right-2 p-1.5 rounded-md bg-black/90 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors border border-slate-700 shadow-md text-xs"
+                      title="Reset to undecided"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
 
                 {/* Card Info Footer */}
-                <div className="p-3 flex-1 flex flex-col justify-between bg-[#111823]">
+                <div className="p-3 sm:p-3.5 flex-1 flex flex-col justify-between bg-[#131C2A]">
                   <div>
                     {/* Demographics Tag */}
                     {item.demographics.length > 0 && (
-                      <span className="text-[9px] uppercase font-bold tracking-widest text-[#00E5FF] mb-0.5 block truncate">
+                      <span className="text-[10px] uppercase font-bold tracking-wider text-[#00E5FF] mb-1 block truncate">
                         {item.demographics.join(' / ')}
                       </span>
                     )}
 
                     {/* Title */}
                     <h4 
-                      className="text-xs sm:text-sm font-bold font-manga text-white line-clamp-1 group-hover:text-[#00E5FF] transition-colors"
+                      onClick={() => setPreviewItem(item)}
+                      className="text-xs sm:text-sm font-bold font-manga text-white line-clamp-1 hover:text-[#00E5FF] transition-colors cursor-pointer"
                       title={item.title.english || item.title.romaji}
                     >
                       {item.title.english || item.title.romaji}
                     </h4>
                     <p 
-                      className="text-[10px] text-slate-400 font-mono truncate mb-2"
+                      className="text-[11px] text-slate-400 font-mono truncate mb-2.5"
                       title={item.title.romaji}
                     >
                       {item.title.romaji}
                     </p>
                   </div>
 
-                  {/* Tactile Status Pills (Visible permanently below card) */}
-                  <div className="grid grid-cols-2 gap-1.5 pt-2 border-t border-[#1F2B3B]">
+                  {/* Highly Visible Tactile Material Decision Buttons */}
+                  <div className="grid grid-cols-2 gap-2 pt-2.5 border-t border-[#243348]">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        setDecision(item.id, 'SEEN');
+                        if (isSeen) {
+                          clearDecision(item.id);
+                        } else {
+                          setDecision(item.id, 'SEEN');
+                        }
                       }}
-                      className={`tactile-pill py-1.5 px-2 text-[10px] rounded-md flex items-center justify-center space-x-1 border transition-all ${
+                      className={`tactile-pill py-2 sm:py-2.5 px-2 text-xs sm:text-sm rounded-lg flex items-center justify-center space-x-1.5 border-2 transition-all ${
                         isSeen
-                          ? 'bg-[#00E5FF] text-black border-[#00E5FF] font-black shadow-[0_0_8px_rgba(0,229,255,0.5)]'
-                          : 'bg-[#151E2B] text-slate-300 border-[#1F2B3B] hover:border-[#00E5FF] hover:text-[#00E5FF]'
+                          ? 'bg-[#00E5FF] text-black border-[#00E5FF] font-black shadow-md'
+                          : 'bg-[#182332] text-slate-100 border-[#2C3E56] hover:border-[#00E5FF] hover:text-[#00E5FF] hover:bg-[#00E5FF]/10'
                       }`}
+                      title={isSeen ? "Click to reset to undecided" : "Mark as Seen (Y)"}
                     >
-                      <Check className="w-3 h-3 stroke-[3]" />
+                      <Check className="w-4 h-4 stroke-[3]" />
                       <span>YES</span>
                     </button>
 
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        setDecision(item.id, 'NOT_SEEN');
+                        if (isNotSeen) {
+                          clearDecision(item.id);
+                        } else {
+                          setDecision(item.id, 'NOT_SEEN');
+                        }
                       }}
-                      className={`tactile-pill py-1.5 px-2 text-[10px] rounded-md flex items-center justify-center space-x-1 border transition-all ${
+                      className={`tactile-pill py-2 sm:py-2.5 px-2 text-xs sm:text-sm rounded-lg flex items-center justify-center space-x-1.5 border-2 transition-all ${
                         isNotSeen
-                          ? 'bg-[#FF334B] text-white border-[#FF334B] font-black shadow-[0_0_8px_rgba(255,51,75,0.5)]'
-                          : 'bg-[#151E2B] text-slate-300 border-[#1F2B3B] hover:border-[#FF334B] hover:text-[#FF334B]'
+                          ? 'bg-[#FF334B] text-white border-[#FF334B] font-black shadow-md'
+                          : 'bg-[#182332] text-slate-100 border-[#2C3E56] hover:border-[#FF334B] hover:text-[#FF334B] hover:bg-[#FF334B]/10'
                       }`}
+                      title={isNotSeen ? "Click to reset to undecided" : "Mark as Not Seen (N)"}
                     >
-                      <X className="w-3 h-3 stroke-[3]" />
+                      <X className="w-4 h-4 stroke-[3]" />
                       <span>NO</span>
                     </button>
                   </div>

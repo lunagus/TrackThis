@@ -13,7 +13,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenLegal }) => {
         {/* Left: Branding & Local First Notice */}
         <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-4 text-center sm:text-left">
           <div className="flex items-center space-x-2 text-white font-manga font-bold uppercase">
-            <div className="w-5 h-5 rounded-full p-[1px] bg-[#00E5FF]">
+            <div className="w-5 h-5 shrink-0">
               <img src="/icon.svg" alt="TrackThis Icon" className="w-full h-full object-contain" />
             </div>
             <span>TRACKTHIS</span>
