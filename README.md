@@ -42,16 +42,14 @@ TrackThis is built with and powered by the following free and open-source datase
 
 ## Roadmap
 
-- [x] High-velocity virtualized batch Grid mode with customizable page density (24, 48, 100, 250, 500)
 - [x] Fast-pick Poll mode with keyboard controls (Y, N, Space, Z) and mobile touch swipe gestures
 - [x] Local-first persistence using browser IndexedDB with session resume banner
 - [x] Multi-format export engine (MAL/AniList XML, full state JSON, CSV spreadsheet, TXT watched list)
 - [x] Client-side backup import supporting JSON, XML, and CSV file validation and merge
 - [x] Background sync worker adhering to AniList (24 req/min) and MyAnimeList (350ms delay) rate limits
-- [x] Granular multi-facet filter drawer with AND/OR genre matching and release year slider
-- [x] Tactile Material Design 3 dark interface with responsive Triage HUD and clean vector cyan heart branding
 - [ ] Movies vertical (`/movies`) with TMDB cross-indexing and Letterboxd CSV export
 - [ ] Books vertical (`/books`) with OpenLibrary metadata integration and Goodreads/StoryGraph CSV export
+- [ ] Music vertical (`/music`) with Last.fm & Spotify library integration
 - [ ] Progressive Web App (PWA) with full offline service worker caching
 - [ ] Custom user lists and tag management
 
