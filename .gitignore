@@ -15,10 +15,6 @@ dist-ssr
 .env.*
 *.env
 
-# Local documentation & internal specs
-DEPLOYMENT.md
-Media Tracker Specs and Prompt.md
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

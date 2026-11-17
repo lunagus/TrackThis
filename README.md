@@ -1,4 +1,4 @@
-# trackthis
+# TrackThis
 
 A fast, local-first media tracker and list curator. Triage titles in batch grids or one by one with keyboard shortcuts, then sync or export directly to your tracking services. No accounts, no servers, zero tracking.
 
@@ -62,9 +62,9 @@ TrackThis is built with and powered by the following free and open-source datase
 
 ## Contributing
 
-Contributions are welcome. If you'd like to improve trackthis, feel free to submit a Pull Request.
+Contributions are welcome. If you'd like to improve TrackThis, feel free to submit a Pull Request.
 
-To report bugs or request features: [github.com/lunagus/trackthis/issues](https://github.com/lunagus/trackthis/issues)
+To report bugs or request features: [github.com/lunagus/TrackThis/issues](https://github.com/lunagus/TrackThis/issues)
 
 ---
 
