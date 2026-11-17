@@ -66,11 +66,15 @@ TrackThis is an ultra-fast, offline-capable media tracker engineered for high-vo
 - Media format filters (TV, Movie, OVA, ONA, Special).
 - Safe for Work (SFW) toggle.
 
-### 6. Legal & Open-Source Compliance
-- Open Database License (ODbL) v1.0 attribution for `manami-project/anime-offline-database` and `Fribb/anime-lists`.
-- TMDB non-commercial disclaimer.
-- OpenLibrary CC0 notice.
-- Comprehensive privacy policy detailing local-first architecture and zero tracker usage.
+### 6. Legal, Open-Source Compliance & Acknowledgments
+- **Open Database License (ODbL) v1.0**:
+  - TrackThis utilizes catalog dataset structures and metadata cross-indexing adapted from **manami-project/anime-offline-database** and **Fribb/anime-lists**.
+  - This database is made available under the Open Database License (ODbL) v1.0. Individual database contents are licensed under the Database Contents License (DbCL) v1.0.
+- **Third-Party Tracker Services & APIs**:
+  - **AniList**: Anime artwork, descriptions, and GraphQL synchronization integrate with the public AniList API (AniList.co) adhering to its rate limit guidelines.
+  - **MyAnimeList**: Export schemas and PKCE OAuth integration comply with the MyAnimeList API v2 Developer Terms of Service.
+- **Privacy by Design**:
+  - Strict local-first architecture. Zero user tracking, zero remote analytics, and zero server-side list databases. All decisions reside exclusively in the client's local IndexedDB.
 
 ---
 

@@ -31,7 +31,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
           <div className="flex items-center space-x-2">
             <Shield className="w-5 h-5 text-[#00E5FF]" />
             <h3 className="font-manga text-lg font-bold text-white uppercase tracking-wider">
-              Legal & Open-Source Attributions
+              {tab === 'privacy' ? 'Privacy Policy' : tab === 'terms' ? 'Terms of Service' : 'Open-Source Attributions'}
             </h3>
           </div>
           <button
