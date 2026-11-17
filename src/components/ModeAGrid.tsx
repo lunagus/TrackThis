@@ -135,7 +135,7 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
   }, [pageItems, focusedIndex, undecidedOnPage, validCurrentPage, totalPages]);
 
   return (
-    <div className="flex flex-col min-h-screen pb-36">
+    <div className="flex flex-col min-h-full pb-6">
       
       {/* Sub-Header Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 bg-[#0E141D]/80 backdrop-blur-md border border-[#1F2B3B] rounded-2xl mb-4">
@@ -358,8 +358,8 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
         </div>
       )}
 
-      {/* Floating Tactical Command Dock (Sweep Mode + Pagination) */}
-      <div className="fixed bottom-3 sm:bottom-4 left-2 right-2 sm:left-6 sm:right-6 max-w-5xl mx-auto z-30">
+      {/* Tactical Command Dock (Sweep Mode + Pagination) - Sticky so it never blocks footer */}
+      <div className="sticky bottom-3 sm:bottom-4 left-0 right-0 max-w-5xl w-full mx-auto z-30 px-2 sm:px-4 my-4">
         <div className="p-2 sm:p-3.5 rounded-xl sm:rounded-2xl bg-[#070A0E]/95 backdrop-blur-xl border-2 border-[#1F2B3B] shadow-[0_10px_35px_rgba(0,0,0,0.8)] flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3">
           
           {/* Sweep Mode Action */}
@@ -484,26 +484,62 @@ export const ModeAGrid: React.FC<ModeAGridProps> = ({ filteredItems }) => {
             </div>
 
             {/* Modal Actions */}
-            <div className="p-4 border-t-2 border-[#1F2B3B] bg-[#070A0E] flex justify-end space-x-3">
-              <button
-                onClick={() => {
-                  setDecision(previewItem.id, 'NOT_SEEN');
-                  setPreviewItem(null);
-                }}
-                className="px-4 py-2 rounded-xl bg-[#0E141D] text-[#FF334B] border border-[#FF334B] font-manga font-bold text-xs uppercase hover:bg-[#FF334B] hover:text-white transition-colors"
-              >
-                Mark as Not Seen
-              </button>
+            <div className="p-4 border-t-2 border-[#1F2B3B] bg-[#070A0E] flex flex-wrap items-center justify-between gap-3">
+              <div>
+                {(decisions[previewItem.id]?.status === 'SEEN' || decisions[previewItem.id]?.status === 'NOT_SEEN') && (
+                  <button
+                    onClick={() => {
+                      clearDecision(previewItem.id);
+                      setPreviewItem(null);
+                    }}
+                    className="text-xs font-mono text-slate-400 hover:text-white underline cursor-pointer"
+                  >
+                    Reset Decision
+                  </button>
+                )}
+              </div>
 
-              <button
-                onClick={() => {
-                  setDecision(previewItem.id, 'SEEN');
-                  setPreviewItem(null);
-                }}
-                className="px-4 py-2 rounded-xl bg-[#00E5FF] text-black font-manga font-bold text-xs uppercase hover:bg-cyan-300 transition-colors shadow-[2px_2px_0px_rgba(0,0,0,0.6)]"
-              >
-                Mark as Seen
-              </button>
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={() => {
+                    if (decisions[previewItem.id]?.status === 'NOT_SEEN') {
+                      clearDecision(previewItem.id);
+                    } else {
+                      setDecision(previewItem.id, 'NOT_SEEN');
+                    }
+                    setPreviewItem(null);
+                  }}
+                  className={`px-4 py-2.5 rounded-xl font-manga font-bold text-xs uppercase transition-all flex items-center space-x-1.5 border-2 shadow-[2px_2px_0px_rgba(0,0,0,0.6)] cursor-pointer ${
+                    decisions[previewItem.id]?.status === 'NOT_SEEN'
+                      ? 'bg-[#FF334B] text-white border-[#FF334B] font-black'
+                      : 'bg-[#0E141D] text-[#FF334B] border-[#FF334B] hover:bg-[#FF334B] hover:text-white hover:shadow-[0_0_20px_rgba(255,51,75,0.4)]'
+                  }`}
+                  title="Mark as Not Seen"
+                >
+                  <X className="w-4 h-4 stroke-[3]" />
+                  <span>Mark as Not Seen</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    if (decisions[previewItem.id]?.status === 'SEEN') {
+                      clearDecision(previewItem.id);
+                    } else {
+                      setDecision(previewItem.id, 'SEEN');
+                    }
+                    setPreviewItem(null);
+                  }}
+                  className={`px-4 py-2.5 rounded-xl font-manga font-bold text-xs uppercase transition-all flex items-center space-x-1.5 border-2 shadow-[2px_2px_0px_rgba(0,0,0,0.6)] cursor-pointer ${
+                    decisions[previewItem.id]?.status === 'SEEN'
+                      ? 'bg-[#00E5FF] text-black border-[#00E5FF] font-black'
+                      : 'bg-[#0E141D] text-[#00E5FF] border-[#00E5FF] hover:bg-[#00E5FF] hover:text-black hover:shadow-[0_0_20px_rgba(0,229,255,0.4)]'
+                  }`}
+                  title="Mark as Seen"
+                >
+                  <Check className="w-4 h-4 stroke-[3]" />
+                  <span>Mark as Seen</span>
+                </button>
+              </div>
             </div>
 
           </div>

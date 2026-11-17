@@ -70,12 +70,6 @@ export const Header: React.FC<HeaderProps> = ({
                   <span className="font-manga text-xl sm:text-2xl font-black tracking-tight text-white group-hover:text-[#00E5FF] transition-colors">
                     TRACK<span className="text-[#00E5FF]">THIS</span>
                   </span>
-                  <span className="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-[#151E2B] text-[#00E5FF] border border-[#00E5FF]/40 hidden xs:inline">
-                    PRO
-                  </span>
-                </div>
-                <div className="text-[11px] font-mono text-slate-400 hidden sm:block">
-                  trackthis.cc/<span className="text-[#00E5FF] font-semibold">anime</span>
                 </div>
               </div>
             </div>

@@ -14,6 +14,12 @@ export const LegalModal: React.FC<LegalModalProps> = ({
 }) => {
   const [tab, setTab] = useState<'attributions' | 'privacy' | 'terms'>(initialTab);
 
+  React.useEffect(() => {
+    if (isOpen) {
+      setTab(initialTab);
+    }
+  }, [isOpen, initialTab]);
+
   if (!isOpen) return null;
 
   return (
@@ -145,7 +151,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                   Acceptance of Terms
                 </h4>
                 <p className="text-slate-400">
-                  By accessing and using TrackThis (trackthis.cc), you agree to utilize the platform for personal, non-commercial media tracking and backup purposes.
+                  By accessing and using TrackThis, you agree to utilize the platform for personal, non-commercial media tracking and backup purposes.
                 </p>
               </div>
 

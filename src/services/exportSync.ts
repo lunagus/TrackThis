@@ -24,7 +24,7 @@ export function exportStateJSON(
 ) {
   const exportPayload = {
     exportedAt: new Date().toISOString(),
-    generator: "TrackThis - High-Velocity Media Tracker (trackthis.cc)",
+    generator: "TrackThis - High-Velocity Media Tracker",
     version: "1.0.0",
     totalCatalogSize: catalog.length,
     decisionsCount: Object.keys(decisions).length,

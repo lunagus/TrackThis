@@ -8,6 +8,7 @@ import { FilterDrawer } from './components/FilterDrawer';
 import { ImportModal } from './components/ImportModal';
 import { SyncModal } from './components/SyncModal';
 import { LegalModal } from './components/LegalModal';
+import { FeedbackModal } from './components/FeedbackModal';
 import { Footer } from './components/Footer';
 
 export function App() {
@@ -25,6 +26,7 @@ export function App() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isImportOpen, setIsImportOpen] = useState(false);
   const [isSyncOpen, setIsSyncOpen] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [legalModalState, setLegalModalState] = useState<{
     isOpen: boolean;
     tab: 'attributions' | 'privacy' | 'terms';
@@ -192,9 +194,16 @@ export function App() {
         onClose={() => setLegalModalState(prev => ({ ...prev, isOpen: false }))}
       />
 
+      <FeedbackModal
+        isOpen={isFeedbackOpen}
+        onClose={() => setIsFeedbackOpen(false)}
+      />
+
       {/* Footer */}
       <Footer
-        onOpenLegal={(tab) => setLegalModalState({ isOpen: true, tab })}
+        onOpenPrivacy={() => setLegalModalState({ isOpen: true, tab: 'privacy' })}
+        onOpenTerms={() => setLegalModalState({ isOpen: true, tab: 'terms' })}
+        onOpenFeedback={() => setIsFeedbackOpen(true)}
       />
 
     </div>

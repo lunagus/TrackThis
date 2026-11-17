@@ -177,17 +177,17 @@ export const ModeBPoll: React.FC<ModeBPollProps> = ({ filteredItems }) => {
         </div>
 
         {/* Hotkey Guide Pills */}
-        <div className="hidden sm:flex items-center space-x-2 text-[11px]">
-          <span className="px-2 py-0.5 rounded-md bg-[#0E141D] border border-cyan-800 text-[#00E5FF]">
+        <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-[11px]">
+          <span className="px-2 py-0.5 rounded-md bg-[#0E141D] border border-cyan-800 text-[#00E5FF] font-medium">
             Y / Right: Seen
           </span>
-          <span className="px-2 py-0.5 rounded-md bg-[#0E141D] border border-red-800 text-[#FF334B]">
+          <span className="px-2 py-0.5 rounded-md bg-[#0E141D] border border-red-800 text-[#FF334B] font-medium">
             N / Left: No
           </span>
-          <span className="px-2 py-0.5 rounded-md bg-[#0E141D] border border-slate-700 text-slate-300">
+          <span className="px-2 py-0.5 rounded-md bg-[#0E141D] border border-slate-700 text-slate-300 font-medium">
             Space: Skip
           </span>
-          <span className="px-2 py-0.5 rounded-md bg-[#0E141D] border border-slate-700 text-slate-300">
+          <span className="px-2 py-0.5 rounded-md bg-[#0E141D] border border-slate-700 text-slate-300 font-medium">
             Z: Undo
           </span>
         </div>
@@ -342,45 +342,36 @@ export const ModeBPoll: React.FC<ModeBPollProps> = ({ filteredItems }) => {
           {/* NO Button */}
           <button
             onClick={() => handleDecision('NOT_SEEN')}
-            className={`py-3 sm:py-4 px-2 sm:px-6 rounded-xl sm:rounded-2xl font-manga font-black text-xs sm:text-sm uppercase tracking-wider flex flex-col sm:flex-row items-center justify-center gap-1 sm:space-x-2 border-2 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.6)] sm:shadow-[4px_4px_0px_rgba(0,0,0,0.6)] active:translate-y-0.5 ${
+            className={`py-3 sm:py-4 px-2 sm:px-6 rounded-xl sm:rounded-2xl font-manga font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center space-x-1.5 sm:space-x-2 border-2 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.6)] sm:shadow-[4px_4px_0px_rgba(0,0,0,0.6)] active:translate-y-0.5 cursor-pointer ${
               isNotSeen
                 ? 'bg-[#FF334B] text-white border-[#FF334B]'
                 : 'bg-[#0E141D] text-[#FF334B] border-[#FF334B] hover:bg-[#FF334B] hover:text-white'
             }`}
           >
             <X className="w-4 h-4 sm:w-5 sm:h-5 stroke-[3]" />
-            <span className="text-[10px] sm:text-xs">NO</span>
-            <span className="hidden sm:inline text-[10px] px-1.5 py-0.5 rounded bg-black/50 border border-current font-mono">
-              Left
-            </span>
+            <span>NO</span>
           </button>
 
           {/* SKIP Button */}
           <button
             onClick={handleSkip}
-            className="py-3 sm:py-4 px-2 sm:px-4 rounded-xl sm:rounded-2xl font-manga font-bold text-xs uppercase tracking-wider flex flex-col sm:flex-row items-center justify-center gap-1 sm:space-x-2 bg-[#0E141D] text-slate-300 border-2 border-[#1F2B3B] hover:text-white hover:border-slate-500 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.6)] sm:shadow-[4px_4px_0px_rgba(0,0,0,0.6)] active:translate-y-0.5"
+            className="py-3 sm:py-4 px-2 sm:px-4 rounded-xl sm:rounded-2xl font-manga font-bold text-xs uppercase tracking-wider flex items-center justify-center space-x-1.5 sm:space-x-2 bg-[#0E141D] text-slate-300 border-2 border-[#1F2B3B] hover:text-white hover:border-slate-500 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.6)] sm:shadow-[4px_4px_0px_rgba(0,0,0,0.6)] active:translate-y-0.5 cursor-pointer"
           >
             <SkipForward className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            <span className="text-[10px] sm:text-xs">SKIP</span>
-            <span className="hidden sm:inline text-[10px] px-1.5 py-0.5 rounded bg-black/50 text-slate-400 font-mono">
-              Space
-            </span>
+            <span>SKIP</span>
           </button>
 
           {/* YES Button */}
           <button
             onClick={() => handleDecision('SEEN')}
-            className={`py-3 sm:py-4 px-2 sm:px-6 rounded-xl sm:rounded-2xl font-manga font-black text-xs sm:text-sm uppercase tracking-wider flex flex-col sm:flex-row items-center justify-center gap-1 sm:space-x-2 border-2 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.6)] sm:shadow-[4px_4px_0px_rgba(0,0,0,0.6)] active:translate-y-0.5 ${
+            className={`py-3 sm:py-4 px-2 sm:px-6 rounded-xl sm:rounded-2xl font-manga font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center space-x-1.5 sm:space-x-2 border-2 transition-all shadow-[2px_2px_0px_rgba(0,0,0,0.6)] sm:shadow-[4px_4px_0px_rgba(0,0,0,0.6)] active:translate-y-0.5 cursor-pointer ${
               isSeen
                 ? 'bg-[#00E5FF] text-black border-[#00E5FF]'
                 : 'bg-[#0E141D] text-[#00E5FF] border-[#00E5FF] hover:bg-[#00E5FF] hover:text-black'
             }`}
           >
             <Check className="w-4 h-4 sm:w-5 sm:h-5 stroke-[3]" />
-            <span className="text-[10px] sm:text-xs">SEEN</span>
-            <span className="hidden sm:inline text-[10px] px-1.5 py-0.5 rounded bg-black/50 border border-current font-mono">
-              Right
-            </span>
+            <span>SEEN</span>
           </button>
 
         </div>
