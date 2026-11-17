@@ -1,6 +1,14 @@
 # trackthis
 
-A high-velocity, local-first media checking and tracker synchronization platform. Blitz through hundreds of titles in virtualized batch grids or pick one-by-one in fast poll mode. No accounts, no server tracking, 100% offline-capable.
+A fast, local-first media tracker and list curator. Triage titles in batch grids or one by one with keyboard shortcuts, then sync or export directly to your tracking services. No accounts, no servers, zero tracking.
+
+---
+
+## Why
+
+Curating media profiles on services like AniList, MyAnimeList, or Letterboxd is notoriously tedious. Building an initial list or catching up after months away requires searching for every title individually, waiting on sluggish search dropdowns, clicking through multiple modals, and manually selecting status flags. For someone with hundreds of titles, a basic backlog review turns into hours of repetitive clicking.
+
+TrackThis turns list building into a rapid triage workflow. Instead of searching and loading pages title-by-title, you scroll through a dense catalog or flip through items with simple keyboard shortcuts (`Y` for seen, `N` for not seen). Decisions save instantly to your browser's local database, ready to be exported as a standard XML/CSV file or synchronized directly via API in the background.
 
 ---
 
@@ -11,10 +19,7 @@ A high-velocity, local-first media checking and tracker synchronization platform
 - **Rate-Limited Cloud Sync** -- Paced background synchronization worker for AniList (GraphQL 2.5s queue adhering to the 24 req/min limit) and MyAnimeList (OAuth2 PKCE flow with 350ms delay) preventing HTTP 429 throttling.
 - **Universal Multi-Platform Export** -- Instant client-side export to MyAnimeList/AniList XML (with mandatory `<update_on_import>1</update_on_import>`), full state JSON, tabular CSV spreadsheets, and TXT watched lists.
 - **Multi-Format Backup Import** -- Drag-and-drop file import engine that parses, validates, and merges remote or local JSON, XML, and CSV archives directly into your local database.
-- **Manga Panel Material Design 3** -- High-contrast dark theme with solid tactile containers, vibrant electric cyan and crimson decision states, zero glossy glassmorphism, and responsive live Triage HUD.
-- **Granular Multi-Facet Filters** -- Zero-latency client-side filtering by format (TV, Movie, OVA, ONA, Special), demographic, genre with AND/OR match logic, release year range, SFW mode, and comprehensive title search (English, Romaji, and native Japanese).
 - **Session Recovery & Exit Guard** -- Automatic session resumption restoring exact scroll and filter states, paired with an unsaved change detection guard before tab unload.
-- **Strict Vector Iconography** -- Zero Unicode emojis across the entire UI and codebase, powered exclusively by clean vector SVG icons.
 
 ---
 
