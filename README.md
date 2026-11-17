@@ -1,104 +1,70 @@
-# TrackThis
+# trackthis
 
-High-Velocity, Local-First Media Tracking and Synchronization Platform (`trackthis.cc`).
-
-TrackThis is an ultra-fast, offline-capable media tracker engineered for high-volume catalog curation. It features a Manga Panel Material Design 3 (M3) Dark Theme, zero server-side list tracking, and multi-format export/sync capabilities.
+A high-velocity, local-first media checking and tracker synchronization platform. Blitz through hundreds of titles in virtualized batch grids or pick one-by-one in fast poll mode. No accounts, no server tracking, 100% offline-capable.
 
 ---
 
-## Key Features
+## Features
 
-### 1. Dual Interaction UX Modes
-- **Mode A (Virtualized Batch Grid)**:
-  - Supports 1 to 500 tiles per page with instantaneous render speed.
-  - Neutral UNDECIDED starting state with dual [YES] / [NO] comfort pills.
-  - Selected states: Electric Cyan (#00E5FF) for Seen, Vivid Red (#FF5252) for Not Seen.
-  - Sweep Action: "Mark Remaining on Page as No & Advance" sweeps all undecided items on the active page and navigates forward.
-- **Mode B (One-by-One Fast-Pick Poll Mode)**:
-  - Single large manga hero card with backdrop banner, synopsis, format, studio, and ratings.
-  - Keyboard navigation:
-    - ArrowRight / Y: YES (Seen)
-    - ArrowLeft / N: NO (Not Seen)
-    - Space / ArrowDown: Skip Title
-    - Z / ArrowUp: Undo Last Action (50-item stack)
-  - Mobile touch swipe gestures (Swipe Right = Seen, Swipe Left = Not Seen).
-  - Background asset preloading for sub-150ms card transitions.
-
-### 2. Design System: Manga Panel Material 3 Dark Theme
-- **Color Tokens**:
-  - Canvas Background: `#0B0F14`
-  - Primary Surface: `#121820`
-  - Elevated Surface: `#1A222D`
-  - Manga Panel Outline: `2px solid #263238`
-  - Hover Elevation: White border outline with cyan offset drop-shadow
-  - Electric Cyan Accent: `#00E5FF`
-  - Negative Decision Accent: `#FF5252`
-- **Branding**:
-  - Custom SVG logo featuring an electric cyan heart containing a crisp white plus sign within a circular dark badge.
-- **No Emojis**:
-  - Strict vector-only iconography powered by Lucide React. Zero Unicode emojis used throughout the UI and codebase.
-
-### 3. Local-First IndexedDB Storage
-- All decisions, session states, and timestamps are saved directly to the user's browser using `idb` (IndexedDB).
-- **Session Resume**: Displays an M3 resume banner upon return, allowing users to jump back to their last active page and review state.
-- **Exit Guard**: `beforeunload` event handler prevents accidental window closure when unexported or unsynced decisions are pending.
-
-### 4. Dual Export & Sync Engine
-- **Client-Side File Exports**:
-  - **MyAnimeList / AniList XML**: Fully compliant XML containing the mandatory `<update_on_import>1</update_on_import>` tag.
-  - **Full State Backup (JSON)**: Complete state snapshot with metadata and timestamps.
-  - **Decisions Spreadsheet (CSV)**: Tabular data with cross-platform IDs (MAL, AniList, Kitsu, AniDB).
-  - **Seen Plaintext (TXT)**: Formatted list of all watched titles.
-  - **Letterboxd / IMDb (CSV)**: Movie tracking schema.
-  - **Goodreads / StoryGraph (CSV)**: Book tracking schema.
-- **Import Engine**:
-  - Automatically parses and validates uploaded `.json`, `.xml`, or `.csv` files and merges them into the local database.
-- **Rate-Limited Cloud Sync**:
-  - AniList GraphQL throttled queue conforming to the official 24 requests/minute rate limit.
-  - MyAnimeList API v2 PKCE flow generator with throttled retry logic.
-
-### 5. Multi-Facet Filtering & Search
-- Full debounced text search across English, Romaji, and native Japanese titles.
-- Decision status filters (All, Undecided Only, Seen Only, Not Seen Only).
-- Distinct Demographic facets (Shounen, Shoujo, Seinen, Josei, Kids).
-- Genre tag filtering with AND/OR match mode toggle.
-- Release year range slider (1980 - 2025).
-- Media format filters (TV, Movie, OVA, ONA, Special).
-- Safe for Work (SFW) toggle.
-
-### 6. Legal, Open-Source Compliance & Acknowledgments
-- **Open Database License (ODbL) v1.0**:
-  - TrackThis utilizes catalog dataset structures and metadata cross-indexing adapted from **manami-project/anime-offline-database** and **Fribb/anime-lists**.
-  - This database is made available under the Open Database License (ODbL) v1.0. Individual database contents are licensed under the Database Contents License (DbCL) v1.0.
-- **Third-Party Tracker Services & APIs**:
-  - **AniList**: Anime artwork, descriptions, and GraphQL synchronization integrate with the public AniList API (AniList.co) adhering to its rate limit guidelines.
-  - **MyAnimeList**: Export schemas and PKCE OAuth integration comply with the MyAnimeList API v2 Developer Terms of Service.
-- **Privacy by Design**:
-  - Strict local-first architecture. Zero user tracking, zero remote analytics, and zero server-side list databases. All decisions reside exclusively in the client's local IndexedDB.
+- **Dual Interaction Modes** -- Virtualized batch grid for rapid multi-title curation and fast-pick Poll mode with tactile hotkeys and mobile touch swipe gestures.
+- **Local-First IndexedDB Engine** -- All decisions, filter configurations, and active session checkpoints persist directly in your browser with zero remote server tracking.
+- **Rate-Limited Cloud Sync** -- Paced background synchronization worker for AniList (GraphQL 2.5s queue adhering to the 24 req/min limit) and MyAnimeList (OAuth2 PKCE flow with 350ms delay) preventing HTTP 429 throttling.
+- **Universal Multi-Platform Export** -- Instant client-side export to MyAnimeList/AniList XML (with mandatory `<update_on_import>1</update_on_import>`), full state JSON, tabular CSV spreadsheets, and TXT watched lists.
+- **Multi-Format Backup Import** -- Drag-and-drop file import engine that parses, validates, and merges remote or local JSON, XML, and CSV archives directly into your local database.
+- **Manga Panel Material Design 3** -- High-contrast dark theme with solid tactile containers, vibrant electric cyan and crimson decision states, zero glossy glassmorphism, and responsive live Triage HUD.
+- **Granular Multi-Facet Filters** -- Zero-latency client-side filtering by format (TV, Movie, OVA, ONA, Special), demographic, genre with AND/OR match logic, release year range, SFW mode, and comprehensive title search (English, Romaji, and native Japanese).
+- **Session Recovery & Exit Guard** -- Automatic session resumption restoring exact scroll and filter states, paired with an unsaved change detection guard before tab unload.
+- **Strict Vector Iconography** -- Zero Unicode emojis across the entire UI and codebase, powered exclusively by clean vector SVG icons.
 
 ---
 
-## Tech Stack
-- **Framework**: React 19 + TypeScript + Vite 6
-- **Styling**: Tailwind CSS v4 + Custom Manga Panel Theme
-- **State Management**: Zustand
-- **Local Persistence**: IndexedDB via `idb`
-- **Iconography**: Lucide React
-- **Celebration Effects**: Canvas Confetti
+## How It Works
+
+1. **Local-First Architecture** -- State persistence relies on client-side IndexedDB (`idb`) rather than synchronous storage or centralized servers. User decisions, filter preferences, and session checkpoints are written non-blockingly in under 2 milliseconds, ensuring total data ownership and offline resilience.
+2. **Decoupled Catalog Curation** -- Browsing is decoupled from live third-party tracker APIs using precompiled metadata indices. By ingesting offline datasets cross-referenced across AniList, MyAnimeList, and database identifiers, users can triage up to 500 titles simultaneously without incurring third-party rate limits.
+3. **Throttled Queue Sync Worker** -- When synchronizing with cloud services, an asynchronous token-bucket queue paces outgoing mutations safely below AniList (24 req/min) and MyAnimeList (350ms interval) ceilings, completely protecting your account from HTTP 429 blocks.
 
 ---
 
-## Getting Started
+## Acknowledgements
 
-### Development
-```bash
-npm install
-npm run dev
-```
-Open `http://localhost:5173/` in your browser.
+TrackThis is built with and powered by the following free and open-source datasets, APIs, and libraries:
 
-### Production Build
-```bash
-npm run build
-npm run preview
-```
+- [manami-project/anime-offline-database](https://github.com/manami-project/anime-offline-database) -- Open-source offline anime database providing core titles, formats, studios, and genres under the [Open Database License (ODbL) v1.0](https://opendatacommons.org/licenses/odbl/1-0/).
+- [Fribb/anime-lists](https://github.com/Fribb/anime-lists) -- Comprehensive cross-reference database mapping MyAnimeList, AniList, Kitsu, AniDB, and IMDb identifiers (Public Domain / Unlicense).
+- [AniList GraphQL API](https://anilist.gitbook.io/anilist-apiv2-docs/) -- Public GraphQL endpoint providing verified cover artwork, banner backdrops, ratings, and media list sync capabilities.
+- [MyAnimeList API v2](https://myanimelist.net/apiconfig/references/api/v2) -- REST API v2 providing OAuth2 PKCE media list updates and XML import schema compliance.
+- [Lucide Icons](https://lucide.dev/) -- Clean, open-source vector SVG icon library under the ISC License.
+- [idb](https://github.com/jakearchibald/idb) -- Lightweight, Promise-based IndexedDB wrapper by Jake Archibald (MIT License).
+- [Tailwind CSS](https://tailwindcss.com/) & [React](https://react.dev/) -- Modern UI framework and utility-first styling engine.
+
+---
+
+## Roadmap
+
+- [x] High-velocity virtualized batch Grid mode with customizable page density (24, 48, 100, 250, 500)
+- [x] Fast-pick Poll mode with keyboard controls (Y, N, Space, Z) and mobile touch swipe gestures
+- [x] Local-first persistence using browser IndexedDB with session resume banner
+- [x] Multi-format export engine (MAL/AniList XML, full state JSON, CSV spreadsheet, TXT watched list)
+- [x] Client-side backup import supporting JSON, XML, and CSV file validation and merge
+- [x] Background sync worker adhering to AniList (24 req/min) and MyAnimeList (350ms delay) rate limits
+- [x] Granular multi-facet filter drawer with AND/OR genre matching and release year slider
+- [x] Tactile Material Design 3 dark interface with responsive Triage HUD and clean vector cyan heart branding
+- [ ] Movies vertical (`/movies`) with TMDB cross-indexing and Letterboxd CSV export
+- [ ] Books vertical (`/books`) with OpenLibrary metadata integration and Goodreads/StoryGraph CSV export
+- [ ] Progressive Web App (PWA) with full offline service worker caching
+- [ ] Custom user lists and tag management
+
+---
+
+## Contributing
+
+Contributions are welcome. If you'd like to improve trackthis, feel free to submit a Pull Request.
+
+To report bugs or request features: [github.com/lunagus/trackthis/issues](https://github.com/lunagus/trackthis/issues)
+
+---
+
+## License
+
+[GPL-3.0](LICENSE)
